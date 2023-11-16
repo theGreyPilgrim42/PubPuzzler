@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pub_puzzler/domain/question.dart';
+import 'package:pub_puzzler/infra/datasources/question.dart';
 
 void main() {
   runApp(const MainApp());
@@ -25,48 +27,119 @@ class MainApp extends StatelessWidget {
           ],
         ),
         body: const SafeArea(
-          child: Card(
-            elevation: 12.5,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.question_mark),
-                  title: Center(
-                    child: Text('Question 1'),
-                  ),
-                  subtitle: Center(
-                    child: Text('History'),
-                  ),
-                  trailing: Icon(Icons.close),
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "Some question?",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    AnswerTile(answerText: "Answer 1"),
-                    SizedBox(height: 10),
-                    AnswerTile(answerText: "Answer 2"),
-                    SizedBox(height: 10),
-                    AnswerTile(answerText: "Answer 3"),
-                    SizedBox(height: 10),
-                    AnswerTile(answerText: "Answer 4"),
-                    SizedBox(height: 10),
-                  ],
-                )
-              ],
-            ),
-          ),
+          child: QuestionCard(),
         ),
       ),
+    );
+  }
+}
+
+class QuestionCard extends StatefulWidget {
+  const QuestionCard({
+    super.key,
+  });
+
+  @override
+  State<QuestionCard> createState() => _QuestionCardState();
+}
+
+class _QuestionCardState extends State<QuestionCard> {
+  Future<Question> question = fetchQuestion();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 12.5,
+      child: FutureBuilder<Question>(
+        future: question,
+        builder: (BuildContext context, AsyncSnapshot<Question> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              Card(
+                elevation: 12.5,
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    ListTile(
+                      leading: const Icon(Icons.question_mark),
+                      title: const Center(
+                        child: Text('Question #1'),
+                      ),
+                      subtitle: Center(
+                        child: Text(snapshot.data!.category.name.toString()),
+                      ),
+                      trailing: const Icon(Icons.close),
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          snapshot.data!.question,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // TODO: Randomize the order of the answers
+                        const SizedBox(height: 10),
+                        AnswerTile(answerText: snapshot.data!.correctAnswer),
+                        const SizedBox(height: 10),
+                        AnswerTile(answerText: snapshot.data!.incorrectAnswers[0]),
+                        const SizedBox(height: 10),
+                        AnswerTile(answerText: snapshot.data!.incorrectAnswers[1]),
+                        const SizedBox(height: 10),
+                        AnswerTile(answerText: snapshot.data!.incorrectAnswers[2]),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    question = fetchQuestion();
+                  });
+                }, 
+                child: Text('Next question')
+              )
+            ];
+          } else if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            ];
+          } else {
+            children = const <Widget>[
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              ),
+            ];
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
+          );
+        },      
+      )
     );
   }
 }
