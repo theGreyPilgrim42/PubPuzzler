@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
+
+// Used to escape HTML code types
+final unescape = HtmlUnescape();
 
 enum Category<T extends Object> {
   generalKnowledge<String>('General Knowledge'),
@@ -58,7 +61,7 @@ enum Difficulty<T extends Object> {
 
 class Question {
   Category category;
-  String _type;
+  String type;
   Difficulty difficulty;
   String question;
   String correctAnswer;
@@ -66,20 +69,21 @@ class Question {
 
   Question(
     this.category,
+    this.type,
     this.difficulty,
     this.question,
     this.correctAnswer,
     this.incorrectAnswers
-  ):
-    _type = 'Multiple Choice';
+  );
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
-      Category.fromString(json['category']),
-      Difficulty.values.byName(json['difficulty']),
-      json['question'] as String,
-      json['correct_answer'] as String,
-      (json['incorrect_answers'] as List).map((item) => item as String).toList()
+      Category.fromString(unescape.convert(json['category'])),
+      unescape.convert(json['type']),
+      Difficulty.values.byName(unescape.convert(json['difficulty'])),
+      unescape.convert(json['question']),
+      unescape.convert(json['correct_answer']),
+      (json['incorrect_answers'] as List).map((item) => unescape.convert(item)).toList()
     );
   }
 
