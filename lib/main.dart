@@ -104,8 +104,8 @@ class _QuestionCardState extends State<QuestionCard> {
                     question = fetchQuestion();
                   });
                 }, 
-                child: Text('Next question')
-              )
+                child: const Text('Next question'),
+              ),
             ];
           } else if (snapshot.hasError) {
             children = <Widget>[
