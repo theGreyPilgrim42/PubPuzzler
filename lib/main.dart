@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/question.dart';
 import 'package:pub_puzzler/infra/datasources/question.dart';
+import 'presenter/color_schemes.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,6 +13,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Pub Puzzler',
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       home: Scaffold(
         // Header container
         appBar: AppBar(
@@ -78,7 +82,7 @@ class _QuestionCardState extends State<QuestionCard> {
                       children: [
                         Text(
                           snapshot.data!.question,
-                          style: const TextStyle(
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -160,10 +164,6 @@ class AnswerTile extends StatelessWidget {
       width: width * 0.95,
       padding: const EdgeInsets.all(10),
       child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.black,
-          side: const BorderSide(color: Colors.black),
-        ),
         onPressed: () => debugPrint("Pressed $answerText"),
         child: Text(answerText),
       )
