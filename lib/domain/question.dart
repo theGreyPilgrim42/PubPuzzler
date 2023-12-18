@@ -59,6 +59,12 @@ enum Difficulty<T extends Object> {
   }
 }
 
+enum AnswerState {
+  correct,
+  incorrect,
+  none,
+}
+
 class Question {
   Category category;
   String type;
@@ -66,6 +72,8 @@ class Question {
   String question;
   String correctAnswer;
   List<String> incorrectAnswers;
+  List<String> answers;
+  AnswerState answerState;
 
   Question(
     this.category,
@@ -74,7 +82,11 @@ class Question {
     this.question,
     this.correctAnswer,
     this.incorrectAnswers
-  );
+  ):
+    answers = [correctAnswer, ...incorrectAnswers],
+    answerState = AnswerState.none {
+      answers.shuffle();
+  }
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(

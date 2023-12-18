@@ -7,8 +7,22 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  int score = 0;
+
+  void updateScore() {
+    setState(() {
+      score += 10;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +44,13 @@ class MainApp extends StatelessWidget {
             ),
           ],
         ),
-        body: const SafeArea(
-          child: QuestionCard(),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Text('Current Score: $score'),
+              QuestionCard(updateScore: updateScore),
+            ],
+          ),
         ),
       ),
     );
@@ -41,14 +60,29 @@ class MainApp extends StatelessWidget {
 class QuestionCard extends StatefulWidget {
   const QuestionCard({
     super.key,
+    required this.updateScore
   });
+
+  final Function updateScore;
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> {
-  Future<Question> question = fetchQuestion();
+  late Future<Question> question = fetchQuestion();
+
+  bool answered = false;
+  int questionNumber = 1;
+
+  Future<void> checkAnswer(String answer) async {
+    debugPrint('Called checkAnser with $answer');
+    if (answer.isEmpty) return;
+    setState(() {
+      question.then((q) => answer == q.correctAnswer ? (q.answerState = AnswerState.correct, widget.updateScore()) : q.answerState = AnswerState.incorrect);
+      answered = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +104,8 @@ class _QuestionCardState extends State<QuestionCard> {
                   children: <Widget>[
                     ListTile(
                       leading: const Icon(Icons.question_mark),
-                      title: const Center(
-                        child: Text('Question #1'),
+                      title: Center(
+                        child: Text('Question #$questionNumber'),
                       ),
                       subtitle: Center(
                         child: Text(snapshot.data!.category.name.toString()),
@@ -87,25 +121,33 @@ class _QuestionCardState extends State<QuestionCard> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // TODO: Randomize the order of the answers
-                        const SizedBox(height: 10),
-                        AnswerTile(answerText: snapshot.data!.correctAnswer),
-                        const SizedBox(height: 10),
-                        AnswerTile(answerText: snapshot.data!.incorrectAnswers[0]),
-                        const SizedBox(height: 10),
-                        AnswerTile(answerText: snapshot.data!.incorrectAnswers[1]),
-                        const SizedBox(height: 10),
-                        AnswerTile(answerText: snapshot.data!.incorrectAnswers[2]),
-                        const SizedBox(height: 10),
+                        for (var answer in snapshot.data!.answers) 
+                          AnswerTile(
+                            answerText: answer, 
+                            checkAnswer: checkAnswer, 
+                            answered: answered, 
+                            correctAnswer: snapshot.data!.correctAnswer,
+                          ),
+                        if (answered) 
+                          Text(
+                            snapshot.data!.answerState == AnswerState.correct ? 'Correct!' : 'Incorrect!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: snapshot.data!.answerState == AnswerState.correct ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.error,
+                            ),
+                          ),
                       ],
                     ),
                   ],
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: !answered ? null : () {
                   setState(() {
                     question = fetchQuestion();
+                    answered = false;
+                    questionNumber++;
                   });
                 }, 
                 child: const Text('Next question'),
@@ -113,9 +155,9 @@ class _QuestionCardState extends State<QuestionCard> {
             ];
           } else if (snapshot.hasError) {
             children = <Widget>[
-              const Icon(
+              Icon(
                 Icons.error_outline,
-                color: Colors.red,
+                color: Theme.of(context).colorScheme.error,
                 size: 60,
               ),
               Padding(
@@ -152,9 +194,15 @@ class AnswerTile extends StatelessWidget {
   const AnswerTile({
     super.key,
     required this.answerText,
+    required this.checkAnswer,
+    required this.answered,
+    required this.correctAnswer,
   });
 
+  final Function(String answer) checkAnswer;
   final String answerText;
+  final bool answered;
+  final String correctAnswer;
 
   @override
   Widget build(BuildContext context) {
@@ -163,8 +211,14 @@ class AnswerTile extends StatelessWidget {
     return Container(
       width: width * 0.95,
       padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(2),
       child: OutlinedButton(
-        onPressed: () => debugPrint("Pressed $answerText"),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: answered && answerText == correctAnswer ? Theme.of(context).primaryColor : answered && answerText != correctAnswer ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.secondary,
+          side: answered && answerText == correctAnswer ? BorderSide(color: Theme.of(context).primaryColor) : answered && answerText != correctAnswer ? BorderSide(color: Theme.of(context).colorScheme.error) : BorderSide(color: Theme.of(context).colorScheme.secondary)
+        ),
+        onPressed: answered ? null : () => checkAnswer(answerText),
         child: Text(answerText),
       )
     );
