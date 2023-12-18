@@ -7,21 +7,8 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  int score = 0;
-
-  void updateScore() {
-    setState(() {
-      score += 10;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +16,19 @@ class _MainAppState extends State<MainApp> {
       title: 'Pub Puzzler',
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-      home: DefaultTabController(
+      home: const PubPuzzlerApp(),
+    );
+  }
+}
+
+class PubPuzzlerApp extends StatelessWidget {
+  const PubPuzzlerApp({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
         length: 3,
         child: Scaffold(
           // Header container
@@ -45,9 +44,25 @@ class _MainAppState extends State<MainApp> {
             children: [
               SafeArea(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Current Score: $score'),
-                    QuestionCard(updateScore: updateScore),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const QuestionScreen(),
+                          ),
+                        );
+                      }, 
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.start),
+                          Text('Start Quiz'),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -68,6 +83,43 @@ class _MainAppState extends State<MainApp> {
             ],
           ),
         ),
+      );
+  }
+}
+
+class QuestionScreen extends StatefulWidget {
+  const QuestionScreen({
+    super.key
+  });
+
+  @override
+  State<QuestionScreen> createState() => _QuestionScreenState();
+}
+
+class _QuestionScreenState extends State<QuestionScreen> {
+  int score = 0;
+
+  void updateScore() {
+    setState(() {
+      score += 10;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Current Score: $score',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          QuestionCard(updateScore: updateScore),
+        ],
       ),
     );
   }
@@ -126,7 +178,12 @@ class _QuestionCardState extends State<QuestionCard> {
                       subtitle: Center(
                         child: Text(snapshot.data!.category.name.toString()),
                       ),
-                      trailing: const Icon(Icons.close),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }, 
+                        icon: const Icon(Icons.close),
+                      ),
                     ),
                     Column(
                       children: [

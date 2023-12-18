@@ -6,12 +6,12 @@ The folder structure is based on [this convention](https://felipeemidio.medium.c
 
 ## ToDo
 - [ ] Add countdown timer
-- [ ] Enable close button on question
+- [x] Enable close button on question
 - [x] Randomize Question order
 - [x] Process chosen answer
 - [ ] Add Animations
 - [ ] Add Score
 - [ ] Add Page to choose Category
-- [ ] Navigation hinzufügen
+- [x] Navigation hinzufügen
 - [ ] State-Management mit Provider
 - [ ] Daten posten
