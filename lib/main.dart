@@ -23,32 +23,48 @@ class _MainAppState extends State<MainApp> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pub Puzzler',
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-      home: Scaffold(
-        // Header container
-        appBar: AppBar(
-          leading: const Icon(Icons.quiz),
-          title: const Text('Header'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                debugPrint('Menu button is pressed');
-              },
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: Column(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          // Header container
+          appBar: AppBar(
+            title: const Text('Header'),
+            bottom: const TabBar(tabs: [
+              Tab(icon: Icon(Icons.quiz)),
+              Tab(icon: Icon(Icons.add_circle_outline)),
+              Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
+            ]),
+          ),
+          body: TabBarView(
             children: [
-              Text('Current Score: $score'),
-              QuestionCard(updateScore: updateScore),
+              SafeArea(
+                child: Column(
+                  children: [
+                    Text('Current Score: $score'),
+                    QuestionCard(updateScore: updateScore),
+                  ],
+                ),
+              ),
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_circle_outline),
+                  Text('Add a custom question'),
+                ],
+              ),
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.insert_chart_outlined_rounded),
+                  Text('Statistics'),
+                ]
+              ),
             ],
           ),
         ),
