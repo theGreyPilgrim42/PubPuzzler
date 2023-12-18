@@ -7,14 +7,96 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Pub Puzzler',
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+      home: const PubPuzzlerApp(),
+    );
+  }
 }
 
-class _MainAppState extends State<MainApp> {
+class PubPuzzlerApp extends StatelessWidget {
+  const PubPuzzlerApp({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          // Header container
+          appBar: AppBar(
+            title: const Text('Header'),
+            bottom: const TabBar(tabs: [
+              Tab(icon: Icon(Icons.quiz)),
+              Tab(icon: Icon(Icons.add_circle_outline)),
+              Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
+            ]),
+          ),
+          body: TabBarView(
+            children: [
+              SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const QuestionScreen(),
+                          ),
+                        );
+                      }, 
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.start),
+                          Text('Start Quiz'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_circle_outline),
+                  Text('Add a custom question'),
+                ],
+              ),
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.insert_chart_outlined_rounded),
+                  Text('Statistics'),
+                ]
+              ),
+            ],
+          ),
+        ),
+      );
+  }
+}
+
+class QuestionScreen extends StatefulWidget {
+  const QuestionScreen({
+    super.key
+  });
+
+  @override
+  State<QuestionScreen> createState() => _QuestionScreenState();
+}
+
+class _QuestionScreenState extends State<QuestionScreen> {
   int score = 0;
 
   void updateScore() {
@@ -23,35 +105,21 @@ class _MainAppState extends State<MainApp> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pub Puzzler',
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-      home: Scaffold(
-        // Header container
-        appBar: AppBar(
-          leading: const Icon(Icons.quiz),
-          title: const Text('Header'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                debugPrint('Menu button is pressed');
-              },
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Current Score: $score',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Text('Current Score: $score'),
-              QuestionCard(updateScore: updateScore),
-            ],
           ),
-        ),
+          QuestionCard(updateScore: updateScore),
+        ],
       ),
     );
   }
@@ -110,7 +178,12 @@ class _QuestionCardState extends State<QuestionCard> {
                       subtitle: Center(
                         child: Text(snapshot.data!.category.name.toString()),
                       ),
-                      trailing: const Icon(Icons.close),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }, 
+                        icon: const Icon(Icons.close),
+                      ),
                     ),
                     Column(
                       children: [
