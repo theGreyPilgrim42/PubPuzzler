@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/question.dart';
 import 'package:pub_puzzler/infra/datasources/question.dart';
+import 'package:pub_puzzler/presenter/add_question_widget.dart';
 import 'presenter/color_schemes.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class MainApp extends StatelessWidget {
   }
 }
 
+// TODO: Refactor to manage state in PubPuzzlerApp Widget
 class PubPuzzlerApp extends StatelessWidget {
   const PubPuzzlerApp({
     super.key,
@@ -69,8 +71,7 @@ class PubPuzzlerApp extends StatelessWidget {
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_circle_outline),
-                  Text('Add a custom question'),
+                  AddQuestionForm(),
                 ],
               ),
               const Column(
