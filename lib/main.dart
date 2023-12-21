@@ -68,12 +68,7 @@ class PubPuzzlerApp extends StatelessWidget {
                   ],
                 ),
               ),
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AddQuestionForm(),
-                ],
-              ),
+              const AddQuestionForm(),
               const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

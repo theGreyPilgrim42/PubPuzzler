@@ -51,81 +51,91 @@ class AddQuestionState extends State<AddQuestionForm> {
 
   @override
   Widget build(BuildContext context) {
-      return Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomDropdownButton(list: Category.values.map((e) => e.name.toString()).toList(), hint: 'Category', callback: setCategory),
-              CustomDropdownButton(list: Difficulty.values.map((e) => e.name.toString()).toList(), hint: 'Difficulty', callback: setDifficulty),
-              TextFormField(
-                controller: questionController,
-                decoration: const InputDecoration(
-                  labelText: 'Question'
-                ),                validator: (String? value) {
-                  return (value == null || value.isEmpty) ? 'Please enter a question' : null;
-                },
-              ),TextFormField(
-                controller: correctAnswerController,
-                decoration: const InputDecoration(
-                  labelText: 'Correct Answer'
+    return Scaffold(
+      body: Builder(
+        builder: (context) {
+          switch (creationState) {
+            case CreationState.loading:
+              return Center(child: CircularProgressIndicator());
+            case CreationState.done:
+              return Center(child: Text('Successfully created Question'));
+            case CreationState.creating:
+              return Form(
+                key: _formKey,
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(10),
+                  children: [
+                    CustomDropdownButton(list: Category.values.map((e) => e.name.toString()).toList(), hint: 'Category', callback: setCategory),
+                    CustomDropdownButton(list: Difficulty.values.map((e) => e.name.toString()).toList(), hint: 'Difficulty', callback: setDifficulty),
+                    TextFormField(
+                      controller: questionController,
+                      decoration: const InputDecoration(
+                        labelText: 'Question'
+                      ),                validator: (String? value) {
+                        return (value == null || value.isEmpty) ? 'Please enter a question' : null;
+                      },
+                    ),TextFormField(
+                      controller: correctAnswerController,
+                      decoration: const InputDecoration(
+                        labelText: 'Correct Answer'
+                      ),
+                      validator: (String? value) {
+                        return (value == null || value.isEmpty) ? 'Please enter a valid answer' : null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: incorrectAnswerOneController,
+                      decoration: const InputDecoration(
+                        labelText: 'Invalid Answer #1'
+                      ),
+                      validator: (String? value) {
+                        return (value == null || value.isEmpty) ? 'Please enter an invalid answer' : null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: incorrectAnswerTwoController,
+                      decoration: const InputDecoration(
+                        labelText: 'Invalid Answer #2'
+                      ),
+                      validator: (String? value) {
+                        return (value == null || value.isEmpty) ? 'Please enter an invalid answer' : null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: incorrectAnswerThreeController,
+                      decoration: const InputDecoration(
+                        labelText: 'Invalid Answer #3'
+                      ),
+                      validator: (String? value) {
+                        return (value == null || value.isEmpty) ? 'Please enter an invalid answer' : null;
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            creationState = CreationState.loading;
+                          });
+                          _formKey.currentState!.save();
+                          List<String> incorrectAnswers = [incorrectAnswerOneController.text, incorrectAnswerTwoController.text, incorrectAnswerThreeController.text];
+                          Question question = Question(chosenCategory, 'multiple', chosenDifficulty, questionController.text, correctAnswerController.text, incorrectAnswers);
+                          await questionRepository.addQuestion(question);
+                          setState(() {
+                            creationState = CreationState.done;
+                          });
+                        }
+                      },
+                      child: const Text('Submit'),
+                    )
+                  ],
                 ),
-                validator: (String? value) {
-                  return (value == null || value.isEmpty) ? 'Please enter a valid answer' : null;
-                },
-              ),
-              TextFormField(
-                controller: incorrectAnswerOneController,
-                decoration: const InputDecoration(
-                  labelText: 'Invalid Answer #1'
-                ),
-                validator: (String? value) {
-                  return (value == null || value.isEmpty) ? 'Please enter an invalid answer' : null;
-                },
-              ),
-              TextFormField(
-                controller: incorrectAnswerTwoController,
-                decoration: const InputDecoration(
-                  labelText: 'Invalid Answer #2'
-                ),
-                validator: (String? value) {
-                  return (value == null || value.isEmpty) ? 'Please enter an invalid answer' : null;
-                },
-              ),
-              TextFormField(
-                controller: incorrectAnswerThreeController,
-                decoration: const InputDecoration(
-                  labelText: 'Invalid Answer #3'
-                ),
-                validator: (String? value) {
-                  return (value == null || value.isEmpty) ? 'Please enter an invalid answer' : null;
-                },
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      creationState = CreationState.loading;
-                    });
-                    _formKey.currentState!.save();
-                    List<String> incorrectAnswers = [incorrectAnswerOneController.text, incorrectAnswerTwoController.text, incorrectAnswerThreeController.text];
-                    Question question = Question(chosenCategory, 'multiple', chosenDifficulty, questionController.text, correctAnswerController.text, incorrectAnswers);
-                    await questionRepository.addQuestion(question);
-                    setState(() {
-                      creationState = CreationState.done;
-                    });
-                  }
-                },
-                child: const Text('Submit'),
-              )
-            ],
-          ),
-        ),
-      );
+              );
+          }
+        }
+      ),
+    );
   }
 }
 
