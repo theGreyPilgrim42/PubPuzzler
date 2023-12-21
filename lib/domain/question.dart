@@ -66,6 +66,7 @@ enum AnswerState {
 }
 
 class Question {
+  int id;
   Category category;
   String type;
   Difficulty difficulty;
@@ -83,6 +84,7 @@ class Question {
     this.correctAnswer,
     this.incorrectAnswers
   ):
+    id = 0,
     answers = [correctAnswer, ...incorrectAnswers],
     answerState = AnswerState.none {
       answers.shuffle();
