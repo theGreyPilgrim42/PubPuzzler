@@ -133,19 +133,44 @@ class QuestionCard extends StatefulWidget {
   State<QuestionCard> createState() => _QuestionCardState();
 }
 
-class _QuestionCardState extends State<QuestionCard> {
+class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMixin {
   late Future<Question> question = fetchQuestion();
+  late AnimationController animationController;
 
   bool answered = false;
   int questionNumber = 1;
 
+  @override
+  void initState() {
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..addListener(() {
+      setState(() {});
+    });
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => countdown());
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   Future<void> checkAnswer(String answer) async {
-    debugPrint('Called checkAnser with $answer');
-    if (answer.isEmpty) return;
     setState(() {
       question.then((q) => answer == q.correctAnswer ? (q.answerState = AnswerState.correct, widget.updateScore()) : q.answerState = AnswerState.incorrect);
       answered = true;
     });
+  }
+
+  Future<void> countdown() async {
+    animationController.reset();
+    await animationController.forward();
+    if (animationController.status == AnimationStatus.completed && !answered) {
+      checkAnswer("");
+    }
   }
 
   @override
@@ -183,6 +208,9 @@ class _QuestionCardState extends State<QuestionCard> {
                     ),
                     Column(
                       children: [
+                        LinearProgressIndicator(
+                          value: animationController.value,
+                        ),
                         Text(
                           snapshot.data!.question,
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -217,6 +245,7 @@ class _QuestionCardState extends State<QuestionCard> {
                     question = fetchQuestion();
                     answered = false;
                     questionNumber++;
+                    countdown();
                   });
                 }, 
                 child: const Text('Next question'),
