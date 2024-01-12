@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:html_unescape/html_unescape.dart';
 
 // Used to escape HTML code types
 final unescape = HtmlUnescape();
+final Random _random = Random();
 
 enum Category<T extends Object> {
   generalKnowledge<String>('General Knowledge'),
@@ -27,17 +30,16 @@ enum Category<T extends Object> {
   entertainmentComics<String>('Entertainment: Comics'),
   scienceGadgets<String>('Science: Gadgets'),
   entertainmentJapaneseAnimeManga<String>('Entertainment: Japanese Anime & Manga'),
-  entertainmentCartoonAnimations<String>('Entertainment: Cartoon & Animations'),
-  random<String>('Random');
+  entertainmentCartoonAnimations<String>('Entertainment: Cartoon & Animations');
 
   const Category(this.name);
   final T name;
 
-   // Static parser method using random as fallback
+   // Static parser method using random Category as fallback
   static Category fromString(String label) {
     return values.firstWhere(
       (v) => v.name == label,
-      orElse: () => Category.random,
+      orElse: () => values[_random.nextInt(values.length)],
     );
   }
 }
