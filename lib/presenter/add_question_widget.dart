@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/question.dart';
 import 'package:pub_puzzler/domain/question_repository.dart';
 
+import 'custom_dropdown_button.dart';
+
 enum CreationState { creating, loading, done}
 
 class AddQuestionForm extends StatefulWidget {
@@ -56,9 +58,9 @@ class AddQuestionState extends State<AddQuestionForm> {
         builder: (context) {
           switch (creationState) {
             case CreationState.loading:
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             case CreationState.done:
-              return Center(child: Text('Successfully created Question'));
+              return const Center(child: Text('Successfully created Question'));
             case CreationState.creating:
               return Form(
                 key: _formKey,
@@ -135,57 +137,6 @@ class AddQuestionState extends State<AddQuestionForm> {
           }
         }
       ),
-    );
-  }
-}
-
-class CustomDropdownButton extends StatefulWidget {
-  final List<String> list;
-  final String hint;
-  final Function callback;
-
-  const CustomDropdownButton({
-    super.key,
-    required this.list,
-    required this.hint,
-    required this.callback,
-  });
-
-  @override
-  State<CustomDropdownButton> createState() => _CustomDropdownButtonState();
-}
-
-class _CustomDropdownButtonState extends State<CustomDropdownButton> {
-  String dropdownValue = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: widget.list.first,
-      hint: Text(widget.hint),
-      decoration: InputDecoration(
-        labelText: widget.hint
-      ),
-      icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: widget.list.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      validator: (value) {
-        return (value == null || value.isEmpty || !widget.list.contains(value)) ? 'Please choose a ${widget.hint}' : null;
-      },
-      onSaved: (value) {
-        widget.callback(value);
-      },
     );
   }
 }
