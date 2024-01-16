@@ -21,7 +21,6 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(widget.list.join(" - "));
     return DropdownButtonFormField<String>(
       value: widget.list.first,
       hint: Text(widget.hint),
