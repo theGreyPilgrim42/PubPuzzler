@@ -85,8 +85,13 @@ class PubPuzzlerApp extends StatelessWidget {
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
-    super.key
+    super.key,
+    required this.category,
+    required this.difficulty,
   });
+
+  final Category category;
+  final Difficulty difficulty;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -114,7 +119,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          QuestionCard(updateScore: updateScore),
+          QuestionCard(updateScore: updateScore, category: widget.category, difficulty: widget.difficulty),
         ],
       ),
     );
