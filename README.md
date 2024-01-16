@@ -2,7 +2,7 @@
 
 A new Flutter project.
 
-The folder structure is based on [this convention](https://felipeemidio.medium.com/folder-structure-for-flutter-with-clean-architecture-how-i-do-bbe29225774f).
+The folder structure is based on [this convention](https://felipeemidio.medium.com/folder-structure-for-flutter-with-clean-architecture-how-i-do-bbe29225774f). For even more [info](https://github.com/Flutterando/Clean-Dart/blob/master/README_en.md).
 
 ## ToDo
 - [x] Add countdown timer
