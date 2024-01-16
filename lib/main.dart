@@ -124,17 +124,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
 class QuestionCard extends StatefulWidget {
   const QuestionCard({
     super.key,
-    required this.updateScore
+    required this.updateScore,
+    required this.category,
+    required this.difficulty,
   });
 
   final Function updateScore;
+  final Category category;
+  final Difficulty difficulty;
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMixin {
-  late Future<Question> question = fetchQuestion();
+  late Future<Question> question = fetchQuestion(category: widget.category.id, difficulty: widget.difficulty.id);
   late AnimationController animationController;
 
   bool answered = false;
@@ -242,7 +246,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
               ElevatedButton(
                 onPressed: !answered ? null : () {
                   setState(() {
-                    question = fetchQuestion();
+                    question = fetchQuestion(category: widget.category.id, difficulty: widget.difficulty.id);
                     answered = false;
                     questionNumber++;
                     countdown();
