@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/question.dart';
 import 'package:pub_puzzler/infra/datasources/question.dart';
 import 'package:pub_puzzler/presenter/add_question_widget.dart';
+import 'package:pub_puzzler/presenter/choose_type_widget.dart';
 import 'presenter/color_schemes.dart';
 
 void main() {
@@ -23,11 +24,16 @@ class MainApp extends StatelessWidget {
 }
 
 // TODO: Refactor to manage state in PubPuzzlerApp Widget
-class PubPuzzlerApp extends StatelessWidget {
+class PubPuzzlerApp extends StatefulWidget {
   const PubPuzzlerApp({
     super.key,
   });
 
+  @override
+  State<PubPuzzlerApp> createState() => _PubPuzzlerAppState();
+}
+
+class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -35,41 +41,25 @@ class PubPuzzlerApp extends StatelessWidget {
         child: Scaffold(
           // Header container
           appBar: AppBar(
-            title: const Text('Header'),
+            title: const Text('Pub Puzzler'),
             bottom: const TabBar(tabs: [
               Tab(icon: Icon(Icons.quiz)),
               Tab(icon: Icon(Icons.add_circle_outline)),
               Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
             ]),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               SafeArea(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const QuestionScreen(),
-                          ),
-                        );
-                      }, 
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.start),
-                          Text('Start Quiz'),
-                        ],
-                      ),
-                    ),
+                    ChooseQuestionTypeForm(),
                   ],
                 ),
               ),
-              const AddQuestionForm(),
-              const Column(
+              AddQuestionForm(),
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.insert_chart_outlined_rounded),
@@ -85,8 +75,13 @@ class PubPuzzlerApp extends StatelessWidget {
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
-    super.key
+    super.key,
+    required this.category,
+    required this.difficulty,
   });
+
+  final Category category;
+  final Difficulty difficulty;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -114,7 +109,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          QuestionCard(updateScore: updateScore),
+          QuestionCard(updateScore: updateScore, category: widget.category, difficulty: widget.difficulty),
         ],
       ),
     );
@@ -124,17 +119,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
 class QuestionCard extends StatefulWidget {
   const QuestionCard({
     super.key,
-    required this.updateScore
+    required this.updateScore,
+    required this.category,
+    required this.difficulty,
   });
 
   final Function updateScore;
+  final Category category;
+  final Difficulty difficulty;
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMixin {
-  late Future<Question> question = fetchQuestion();
+  late Future<Question> question = fetchQuestion(category: widget.category.id, difficulty: widget.difficulty.id);
   late AnimationController animationController;
 
   bool answered = false;
@@ -242,7 +241,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
               ElevatedButton(
                 onPressed: !answered ? null : () {
                   setState(() {
-                    question = fetchQuestion();
+                    question = fetchQuestion(category: widget.category.id, difficulty: widget.difficulty.id);
                     answered = false;
                     questionNumber++;
                     countdown();

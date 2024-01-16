@@ -1,54 +1,57 @@
+import 'dart:math';
+
 import 'package:html_unescape/html_unescape.dart';
 
-// Used to escape HTML code types
-final unescape = HtmlUnescape();
+final unescape = HtmlUnescape(); // Used to escape HTML code types
+final Random _random = Random(); // Used to get a random category
 
-enum Category<T extends Object> {
-  generalKnowledge<String>('General Knowledge'),
-  entertainmentBooks<String>('Entertainment: Books'),
-  entertainmentFilm<String>('Entertainment: Film'),
-  entertainmentMusic<String>('Entertainment: Music'),
-  entertainmentMusicalsTheatres<String>('Entertainment: Musicals & Theatres'),
-  entertainmentTelevision<String>('Entertainment: Television'),
-  entertainmentVideoGames<String>('Entertainment: Video Games'),
-  entertainmentBoardGames<String>('Entertainment: Board Games'),
-  scienceNature<String>('Science & Nature'),
-  scienceComputers<String>('Science: Computers'),
-  scienceMathematics<String>('Science: Mathematics'),
-  mythology<String>('Mythology'),
-  sports<String>('Sports'),
-  geography<String>('Geography'),
-  history<String>('History'),
-  politics<String>('Politics'),
-  art<String>('Art'),
-  celebrities<String>('Celebrities'),
-  animals<String>('Animals'),
-  vehicles<String>('Vehicles'),
-  entertainmentComics<String>('Entertainment: Comics'),
-  scienceGadgets<String>('Science: Gadgets'),
-  entertainmentJapaneseAnimeManga<String>('Entertainment: Japanese Anime & Manga'),
-  entertainmentCartoonAnimations<String>('Entertainment: Cartoon & Animations'),
-  random<String>('Random');
+enum Category {
+  generalKnowledge(name: 'General Knowledge', id: 9),
+  entertainmentBooks(name: 'Entertainment: Books', id: 10),
+  entertainmentFilm(name: 'Entertainment: Film', id: 11),
+  entertainmentMusic(name: 'Entertainment: Music', id: 12),
+  entertainmentMusicalsTheatres(name: 'Entertainment: Musicals & Theatres', id: 13),
+  entertainmentTelevision(name: 'Entertainment: Television', id: 14),
+  entertainmentVideoGames(name: 'Entertainment: Video Games', id: 15),
+  entertainmentBoardGames(name: 'Entertainment: Board Games', id: 16),
+  scienceNature(name: 'Science & Nature', id: 17),
+  scienceComputers(name: 'Science: Computers', id: 18),
+  scienceMathematics(name: 'Science: Mathematics', id: 19),
+  mythology(name: 'Mythology', id: 20),
+  sports(name: 'Sports', id: 21),
+  geography(name: 'Geography', id: 22),
+  history(name: 'History', id: 23),
+  politics(name: 'Politics', id: 24),
+  art(name: 'Art', id: 25),
+  celebrities(name: 'Celebrities', id: 26),
+  animals(name: 'Animals', id: 27),
+  vehicles(name: 'Vehicles', id: 28),
+  entertainmentComics(name: 'Entertainment: Comics', id: 29),
+  scienceGadgets(name: 'Science: Gadgets', id: 30),
+  entertainmentJapaneseAnimeManga(name: 'Entertainment: Japanese Anime & Manga', id: 31),
+  entertainmentCartoonAnimations(name: 'Entertainment: Cartoon & Animations', id: 32);
 
-  const Category(this.name);
-  final T name;
+  const Category({required this.name, required this.id});
+  final String name;
+  final int id;
 
-   // Static parser method using random as fallback
+   // Static parser method using random Category as fallback
   static Category fromString(String label) {
     return values.firstWhere(
       (v) => v.name == label,
-      orElse: () => Category.random,
+      orElse: () => values[_random.nextInt(values.length)],
     );
   }
 }
 
-enum Difficulty<T extends Object> {
-  easy<String>('Easy'),
-  medium<String>('Medium'),
-  hard<String>('Hard');
+enum Difficulty {
+  easy(name: 'Easy', id: 'easy'),
+  medium(name: 'Medium', id: 'medium'),
+  hard(name: 'Hard', id: 'hard');
 
-  const Difficulty(this.name);
-  final T name;
+  const Difficulty({required this.name, required this.id});
+  final String name;
+  final String id;
 
      // Static parser method using medium as fallback
   static Difficulty fromString(String label) {
