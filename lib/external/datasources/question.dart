@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:pub_puzzler/domain/entities/question.dart';
-import 'package:pub_puzzler/domain/question_repository.dart';
+import 'package:pub_puzzler/infra/repositories/question_repository.dart';
 
 const String apiURL = 'https://opentdb.com/api.php';
 const String questionType = '&type=multiple';
