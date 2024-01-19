@@ -1,9 +1,10 @@
 
 
-import 'package:pub_puzzler/domain/question.dart';
+import 'package:pub_puzzler/domain/entities/question.dart';
 
 class QuestionRepository {
   int _nextId = 1;
+  // ignore: prefer_final_fields
   List<Question> _questions = [];
   // Singleton approach
   static final QuestionRepository _questionRepository = QuestionRepository._privateConstructor();
