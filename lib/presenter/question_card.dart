@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/question.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
-import 'package:pub_puzzler/infra/datasources/question.dart';
+import 'package:pub_puzzler/external/datasources/question.dart';
 import 'package:pub_puzzler/presenter/answer_tile.dart';
 
 class QuestionCard extends StatefulWidget {
