@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Game extends ChangeNotifier {
+class GameProvider extends ChangeNotifier {
   int _score = 0;
 
   void updateScore() {

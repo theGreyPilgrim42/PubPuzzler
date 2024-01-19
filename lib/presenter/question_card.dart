@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/question.dart';
+import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/datasources/question.dart';
 import 'package:pub_puzzler/presenter/answer_tile.dart';
 
 class QuestionCard extends StatefulWidget {
   const QuestionCard({
     super.key,
-    required this.updateScore,
+    required this.gameProvider,
     required this.category,
     required this.difficulty,
   });
 
-  final Function updateScore;
+  final GameProvider gameProvider;
   final Category category;
   final Difficulty difficulty;
 
@@ -46,7 +47,15 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
 
   Future<void> checkAnswer(String answer) async {
     setState(() {
-      question.then((q) => answer == q.correctAnswer ? (q.answerState = AnswerState.correct, widget.updateScore()) : q.answerState = AnswerState.incorrect);
+      //question.then((q) => answer == q.correctAnswer ? (q.answerState = AnswerState.correct, widget.updateScore()) : q.answerState = AnswerState.incorrect);
+      question.then((q) {
+        if (answer == q.correctAnswer) {
+          q.answerState = AnswerState.correct;
+          widget.gameProvider.updateScore();
+        } else {
+          q.answerState = AnswerState.incorrect;
+        }
+      });
       answered = true;
     });
   }

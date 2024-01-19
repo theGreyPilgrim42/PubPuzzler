@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pub_puzzler/domain/question.dart';
+import 'package:provider/provider.dart';
+import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/presenter/add_question_widget.dart';
 import 'package:pub_puzzler/presenter/choose_type_widget.dart';
 import 'presenter/color_schemes.dart';
-import 'presenter/question_card.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,11 +14,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pub Puzzler',
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-      home: const PubPuzzlerApp(),
+    return ChangeNotifierProvider(
+      create:(context) => GameProvider(),
+      child: MaterialApp(
+        title: 'Pub Puzzler',
+        theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+        darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+        home: const PubPuzzlerApp(),
+      ),
     );
   }
 }
@@ -67,51 +70,8 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
                 ]
               ),
             ],
-          ),
-        ),
-      );
-  }
-}
-
-class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({
-    super.key,
-    required this.category,
-    required this.difficulty,
-  });
-
-  final Category category;
-  final Difficulty difficulty;
-
-  @override
-  State<QuestionScreen> createState() => _QuestionScreenState();
-}
-
-class _QuestionScreenState extends State<QuestionScreen> {
-  int score = 0;
-
-  void updateScore() {
-    setState(() {
-      score += 10;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Current Score: $score',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
             ),
           ),
-          QuestionCard(updateScore: updateScore, category: widget.category, difficulty: widget.difficulty),
-        ],
-      ),
     );
   }
 }
