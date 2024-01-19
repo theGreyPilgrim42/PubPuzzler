@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pub_puzzler/domain/question.dart';
+import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/presenter/custom_dropdown_button.dart';
 import 'package:pub_puzzler/presenter/question_screen.dart';
 

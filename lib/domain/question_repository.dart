@@ -1,6 +1,6 @@
 
 
-import 'package:pub_puzzler/domain/question.dart';
+import 'package:pub_puzzler/domain/entities/question.dart';
 
 class QuestionRepository {
   int _nextId = 1;

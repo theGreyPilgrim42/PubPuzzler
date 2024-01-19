@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pub_puzzler/domain/question.dart';
+import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/presenter/question_card.dart';
 
