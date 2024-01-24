@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/external/datasources/question.dart';
+import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/answer_tile.dart';
 
 class QuestionCard extends StatefulWidget {
@@ -21,6 +22,7 @@ class QuestionCard extends StatefulWidget {
 }
 
 class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMixin {
+  final logger = getLogger();
   late Future<Question> question = fetchQuestion(category: widget.category.id, difficulty: widget.difficulty.id);
   late AnimationController animationController;
 
@@ -55,6 +57,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
         } else {
           q.answerState = AnswerState.incorrect;
         }
+        logger.d('Answer is: ${q.correctAnswer}');
       });
       answered = true;
     });
@@ -64,6 +67,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
     animationController.reset();
     await animationController.forward();
     if (animationController.status == AnimationStatus.completed && !answered) {
+      logger.d('Question was not answered in time');
       checkAnswer("");
     }
   }

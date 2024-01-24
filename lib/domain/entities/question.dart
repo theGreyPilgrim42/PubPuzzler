@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:html_unescape/html_unescape.dart';
+import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final unescape = HtmlUnescape(); // Used to escape HTML code types
 final Random _random = Random(); // Used to get a random category
+final logger = getLogger();
 
 enum Category {
   generalKnowledge(name: 'General Knowledge', id: 9),
@@ -94,6 +96,7 @@ class Question {
   }
 
   factory Question.fromJson(Map<String, dynamic> json) {
+    logger.d('Creating Question from JSON...');
     return Question(
       Category.fromString(unescape.convert(json['category'])),
       unescape.convert(json['type']),
