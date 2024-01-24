@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/custom_dropdown_button.dart';
 import 'package:pub_puzzler/presenter/question_screen.dart';
 
@@ -14,6 +15,7 @@ class ChooseQuestionTypeForm extends StatefulWidget {
 
 class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
   final _formKey = GlobalKey<FormState>();
+  final logger = getLogger();
   final List<String> categoryList = ['Random', ...Category.values.map((e) => e.name.toString()).toList()];
   final List<String> difficultyList = ['Random', ...Difficulty.values.map((e) => e.name.toString()).toList()];
   late Category chosenCategory;
@@ -46,6 +48,9 @@ class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                logger.i('Chosen category: $chosenCategory');
+                logger.i('Chosen difficulty: $chosenDifficulty');
+                logger.d('Starting quiz...');
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => QuestionScreen(category: chosenCategory, difficulty: chosenDifficulty,),

@@ -1,6 +1,7 @@
-
-
 import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/infra/services/logger_util.dart';
+
+final logger = getLogger();
 
 class QuestionRepository {
   int _nextId = 1;
@@ -17,6 +18,7 @@ class QuestionRepository {
   Future<void> addQuestion(Question question) async {
     question.id = _nextId++;
     _questions.add(question);
+    logger.i("Added question '#${question.id} - ${question.question}' to Repository");
   }
 
   Future<List<Question>> getQuestions() async {
@@ -29,5 +31,6 @@ class QuestionRepository {
 
   Future<void> removeQuestion(int id) async {
     _questions.removeWhere((question) => question.id == id);
+    logger.i("Removed question '#$id' from Repository");
   }
 }
