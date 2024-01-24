@@ -49,7 +49,6 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
 
   Future<void> checkAnswer(String answer) async {
     setState(() {
-      //question.then((q) => answer == q.correctAnswer ? (q.answerState = AnswerState.correct, widget.updateScore()) : q.answerState = AnswerState.incorrect);
       question.then((q) {
         if (answer == q.correctAnswer) {
           q.answerState = AnswerState.correct;

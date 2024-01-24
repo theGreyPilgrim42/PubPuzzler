@@ -19,19 +19,15 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-  void test() {}
-
   @override
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(
       builder: (context, game, child) => Scaffold(
-      //return Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Current Score: ${game.score}',
-              //'Current Score',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
