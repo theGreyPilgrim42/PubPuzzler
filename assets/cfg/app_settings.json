@@ -1,0 +1,4 @@
+{
+    "appName": "Pub Puzzler",
+    "baseOpenDbApiUrl": "https://opentdb.com/api.php"
+}
