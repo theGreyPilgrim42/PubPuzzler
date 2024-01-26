@@ -10,7 +10,9 @@ import 'presenter/color_schemes.dart';
 
 void main() {
   setupLogger();
+  final logger = getLogger();
   ErrorWidget.builder = (FlutterErrorDetails details) {
+    logger.e(details.exception);
     if (kDebugMode) {
       return CustomErrorWidget(errorMessage: details.exception.toString());
     }

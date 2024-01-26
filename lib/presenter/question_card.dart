@@ -150,6 +150,7 @@ class _QuestionCardState extends State<QuestionCard> with TickerProviderStateMix
               ),
             ];
           } else if (snapshot.hasError) {
+            logger.e(snapshot.error.toString());
             children = <Widget>[
               Icon(
                 Icons.error_outline,
