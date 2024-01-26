@@ -28,7 +28,7 @@ Future<Question> fetchQuestion({int? category, String? difficulty}) async {
     return question;
   } else {
     logger.e('Failed to fetch question');
-    throw Exception('Failed to fetch question');
+    return Future.error('Failed to fetch question');
   }
 }
 
@@ -52,6 +52,6 @@ Future<List<Question>> fetchQuestions(int amount, {int? category, String? diffic
     return questions;
   } else {
     logger.e('Failed to fetch $amount questions');
-    throw Exception('Failed to fetch $amount questions');
+    return Future.error('Failed to fetch $amount questions');
   }
 }
