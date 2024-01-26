@@ -1,13 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/add_question_widget.dart';
 import 'package:pub_puzzler/presenter/choose_type_widget.dart';
+import 'package:pub_puzzler/presenter/custom_error_widget.dart';
 import 'presenter/color_schemes.dart';
 
 void main() {
   setupLogger();
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    if (kDebugMode) {
+      return CustomErrorWidget(errorMessage: details.exception.toString());
+    }
+    return const CustomErrorWidget(errorMessage: 'We are sorry for any inconvenience');
+  };
   runApp(const MainApp());
 }
 
