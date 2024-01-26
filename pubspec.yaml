@@ -10,11 +10,12 @@ dependencies:
   convert: ^3.1.1
   flutter:
     sdk: flutter
-  global_configuration: ^2.0.0
+  global_configuration: 2.0.0-nullsafety.1
   html_unescape: ^2.0.0
-  http: ^1.1.0
+  http: any
   logger: ^2.0.2+1
   provider: ^6.1.1
+  appwrite: any
 
 dev_dependencies:
   flutter_test:
