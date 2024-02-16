@@ -1,8 +1,9 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
+import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/add_question_widget.dart';
@@ -22,33 +23,28 @@ void main() async {
     }
     return const CustomErrorWidget(errorMessage: 'We are sorry for any inconvenience');
   };
+  await dotenv.load();
   await GlobalConfiguration().loadFromAsset("app_settings");
-  // TODO: Provide this differently
-  Client client = Client();
-  client = Client()
-      .setEndpoint("https://cloud.appwrite.io/v1")
-      .setProject("65b3c92188f3241167e2");
-  Account account = Account(client);
-  runApp(MainApp(account: account));
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
   const MainApp({
     super.key,
-    required this.account
   });
-
-  final Account account;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create:(context) => GameProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GameProvider>(create: (context) => GameProvider()),
+        ChangeNotifierProvider<AuthProvider>(create: (context) => AuthProvider()),
+      ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
         theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
         darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-        home: PubPuzzlerApp(account: account),
+        home: const PubPuzzlerApp(),
       ),
     );
   }
@@ -57,11 +53,8 @@ class MainApp extends StatelessWidget {
 // TODO: Refactor to manage state in PubPuzzlerApp Widget
 class PubPuzzlerApp extends StatefulWidget {
   const PubPuzzlerApp({
-    super.key,
-    required this.account
+    super.key
   });
-
-  final Account account;
 
   @override
   State<PubPuzzlerApp> createState() => _PubPuzzlerAppState();
@@ -83,9 +76,9 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
               Tab(icon: Icon(Icons.account_circle_outlined)),
             ]),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
-              const SafeArea(
+              SafeArea(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -93,15 +86,15 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
                   ],
                 ),
               ),
-              const AddQuestionForm(),
-              const Column(
+              AddQuestionForm(),
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.insert_chart_outlined_rounded),
                   Text('Statistics'),
                 ]
               ),
-              LoginForm(account: widget.account),
+              LoginForm(),
             ],
             ),
           ),
