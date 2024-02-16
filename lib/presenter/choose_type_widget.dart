@@ -16,8 +16,8 @@ class ChooseQuestionTypeForm extends StatefulWidget {
 class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
   final _formKey = GlobalKey<FormState>();
   final logger = getLogger();
-  final List<String> categoryList = ['Random', ...Category.values.map((e) => e.name.toString()).toList()];
-  final List<String> difficultyList = ['Random', ...Difficulty.values.map((e) => e.name.toString()).toList()];
+  final List<String> categoryList = ['Random', ...Category.values.map((e) => e.name.toString())];
+  final List<String> difficultyList = ['Random', ...Difficulty.values.map((e) => e.name.toString())];
   late Category chosenCategory;
   late Difficulty chosenDifficulty;
 
