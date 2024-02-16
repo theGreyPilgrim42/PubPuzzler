@@ -7,6 +7,7 @@ import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();
 
+// TODO: Check if SMS and/or OAuth2 login should be a possibility as well  
 class AuthProvider extends ChangeNotifier {
   late Client _client;
   late Account _account;
@@ -18,22 +19,11 @@ class AuthProvider extends ChangeNotifier {
     _client = Client();
     _client = Client()
         .setEndpoint(GlobalConfiguration().getValue('baseAppwriteApiUrl'))
-        .setProject(dotenv.env['APPWRITE_PROJECT_ID']);  // TODO: Provide this through env vars -> create new appwrite project
+        .setProject(dotenv.env['APPWRITE_PROJECT_ID']);
     _account = Account(_client);
 
-    logger.i("Setup Appwrite Account and Client");
     notifyListeners();
   }
-
-  /* setupAuth() {
-    _client = Client();
-    _client = Client()
-        .setEndpoint(GlobalConfiguration().getValue('baseAppwriteApiUrl'))
-        .setProject(dotenv.env['APPWRITE_PROJECT_ID']);  // TODO: Provide this through env vars -> create new appwrite project
-    _account = Account(_client);
-    notifyListeners();
-    logger.i("Setup AuthProvider");
-  } */
 
   Client get client => _client;
   Account get account => _account;
@@ -51,7 +41,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> register(String email, String password, String name) async {
-    await account.create(userId: ID.unique(), email: email, password: password); // TODO: Handle case - User already exists
+    await account.create(userId: ID.unique(), email: email, password: password, name: name); // TODO: Handle case - User already exists
     await emailLogin(email, password);
     notifyListeners();
   }
@@ -61,8 +51,4 @@ class AuthProvider extends ChangeNotifier {
     _user = null;
     notifyListeners();
   }
-
-  // TODO: Check if SMS login should be a possibility as well
-  // TODO: Check if OAuth2 should be a possibility as well
-  
 }

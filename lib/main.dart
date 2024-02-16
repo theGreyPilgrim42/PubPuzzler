@@ -50,7 +50,6 @@ class MainApp extends StatelessWidget {
   }
 }
 
-// TODO: Refactor to manage state in PubPuzzlerApp Widget
 class PubPuzzlerApp extends StatefulWidget {
   const PubPuzzlerApp({
     super.key
