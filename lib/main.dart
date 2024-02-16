@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
+import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/add_question_widget.dart';
 import 'package:pub_puzzler/presenter/choose_type_widget.dart';
 import 'package:pub_puzzler/presenter/custom_error_widget.dart';
+import 'package:pub_puzzler/presenter/login_form.dart';
 import 'presenter/color_schemes.dart';
 
 void main() async {
@@ -20,17 +23,23 @@ void main() async {
     }
     return const CustomErrorWidget(errorMessage: 'We are sorry for any inconvenience');
   };
+  await dotenv.load();
   await GlobalConfiguration().loadFromAsset("app_settings");
   runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create:(context) => GameProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GameProvider>(create: (context) => GameProvider()),
+        ChangeNotifierProvider<AuthProvider>(create: (context) => AuthProvider()),
+      ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
         theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
@@ -41,10 +50,9 @@ class MainApp extends StatelessWidget {
   }
 }
 
-// TODO: Refactor to manage state in PubPuzzlerApp Widget
 class PubPuzzlerApp extends StatefulWidget {
   const PubPuzzlerApp({
-    super.key,
+    super.key
   });
 
   @override
@@ -55,7 +63,7 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           // Header container
           appBar: AppBar(
@@ -64,6 +72,7 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
               Tab(icon: Icon(Icons.quiz)),
               Tab(icon: Icon(Icons.add_circle_outline)),
               Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
+              Tab(icon: Icon(Icons.account_circle_outlined)),
             ]),
           ),
           body: const TabBarView(
@@ -84,6 +93,7 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
                   Text('Statistics'),
                 ]
               ),
+              LoginForm(),
             ],
             ),
           ),

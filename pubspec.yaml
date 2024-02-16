@@ -10,19 +10,22 @@ dependencies:
   convert: ^3.1.1
   flutter:
     sdk: flutter
-  global_configuration: ^2.0.0
+  global_configuration: 2.0.0-nullsafety.1
   html_unescape: ^2.0.0
-  http: ^1.1.0
+  http: any
   logger: ^2.0.2+1
   provider: ^6.1.1
+  appwrite: any
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
   flutter_launcher_icons: "^0.13.1"
 
 flutter:
   uses-material-design: true
   assets:
     - assets/cfg/
+    - .env

@@ -1,4 +1,5 @@
 {
     "appName": "Pub Puzzler",
-    "baseOpenDbApiUrl": "https://opentdb.com/api.php"
+    "baseOpenDbApiUrl": "https://opentdb.com/api.php",
+    "baseAppwriteApiUrl": "https://cloud.appwrite.io/v1"
 }
