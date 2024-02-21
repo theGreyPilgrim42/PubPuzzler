@@ -27,7 +27,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Current Score: ${game.score}',
+                    'Current Score: ${game.currentGame.score}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

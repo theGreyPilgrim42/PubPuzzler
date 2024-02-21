@@ -7,14 +7,16 @@ import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();
 
-// TODO: Check if SMS and/or OAuth2 login should be a possibility as well
+// TODO: Improve error handling in general
 class AuthProvider extends ChangeNotifier {
   late Client _client;
   late Account _account;
   late User? _user;
+  late String? _userId;
 
   AuthProvider() {
     _user = null;
+    _userId = null;
     // Setup account and client
     _client = Client();
     _client = Client()
@@ -28,10 +30,12 @@ class AuthProvider extends ChangeNotifier {
   Client get client => _client;
   Account get account => _account;
   User? get user => _user;
+  String? get userId => _userId;
 
   Future<void> emailLogin(String email, String password) async {
     await _account.createEmailSession(email: email, password: password);
     _user = await account.get();
+    _userId = _user!.$id;
     notifyListeners();
   }
 
@@ -40,12 +44,11 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> register(String email, String password, String name) async {
+  Future<void> register(String email, String password) async {
     await account.create(
         userId: ID.unique(),
         email: email,
-        password: password,
-        name: name); // TODO: Handle case - User already exists
+        password: password); // TODO: Handle case - User already exists
     await emailLogin(email, password);
     notifyListeners();
   }

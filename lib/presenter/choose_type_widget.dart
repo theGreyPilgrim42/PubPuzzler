@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/infra/services/auth_provider.dart';
+import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/custom_dropdown_button.dart';
 import 'package:pub_puzzler/presenter/question_screen.dart';
@@ -55,12 +58,19 @@ class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
               hint: 'Difficulty',
               callback: setDifficulty),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              if (!context.mounted) return;
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 logger.i('Chosen category: $chosenCategory');
                 logger.i('Chosen difficulty: $chosenDifficulty');
                 logger.d('Starting quiz...');
+                if (!context.mounted) return;
+
+                String userId =
+                    Provider.of<AuthProvider>(context, listen: false).userId!;
+                Provider.of<GameProvider>(context, listen: false)
+                    .addNewGame(userId);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => QuestionScreen(

@@ -54,9 +54,10 @@ class _QuestionCardState extends State<QuestionCard>
       question.then((q) {
         if (answer == q.correctAnswer) {
           q.answerState = AnswerState.correct;
-          widget.gameProvider.updateScore();
+          widget.gameProvider.updateCurrentGame(true, true);
         } else {
           q.answerState = AnswerState.incorrect;
+          widget.gameProvider.updateCurrentGame(false, false);
         }
         logger.d('Answer is: ${q.correctAnswer}');
       });
@@ -81,7 +82,23 @@ class _QuestionCardState extends State<QuestionCard>
           future: question,
           builder: (BuildContext context, AsyncSnapshot<Question> snapshot) {
             List<Widget> children;
-            if (snapshot.hasData) {
+            if (questionNumber > widget.gameProvider.maxRounds) {
+              children = <Widget>[
+                Card(
+                    elevation: 12.5,
+                    margin: const EdgeInsets.all(10),
+                    child: Column(children: [
+                      const Text("Game Finished"),
+                      ElevatedButton(
+                        onPressed: () {
+                          widget.gameProvider.persistCurrentGame();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Go Back"),
+                      )
+                    ])),
+              ];
+            } else if (snapshot.hasData) {
               children = <Widget>[
                 Card(
                   elevation: 12.5,

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
+import 'package:pub_puzzler/presenter/account_page.dart';
 import 'package:pub_puzzler/presenter/add_question_widget.dart';
 import 'package:pub_puzzler/presenter/choose_type_widget.dart';
 import 'package:pub_puzzler/presenter/custom_error_widget.dart';
@@ -26,6 +27,7 @@ void main() async {
   };
   await dotenv.load();
   await GlobalConfiguration().loadFromAsset("app_settings");
+
   runApp(const MainApp());
 }
 
@@ -38,16 +40,16 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<GameProvider>(
-            create: (context) => GameProvider()),
         ChangeNotifierProvider<AuthProvider>(
             create: (context) => AuthProvider()),
+        ChangeNotifierProvider<GameProvider>(
+            create: (context) => GameProvider()),
       ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
         theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
         darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-        home: const PubPuzzlerApp(),
+        home: const LoginForm(),
       ),
     );
   }
@@ -64,7 +66,7 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         // Header container
         appBar: AppBar(
@@ -72,7 +74,6 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
           bottom: const TabBar(tabs: [
             Tab(icon: Icon(Icons.quiz)),
             Tab(icon: Icon(Icons.add_circle_outline)),
-            Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
             Tab(icon: Icon(Icons.account_circle_outlined)),
           ]),
         ),
@@ -87,11 +88,7 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
               ),
             ),
             AddQuestionForm(),
-            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(Icons.insert_chart_outlined_rounded),
-              Text('Statistics'),
-            ]),
-            LoginForm(),
+            AccountPage()
           ],
         ),
       ),
