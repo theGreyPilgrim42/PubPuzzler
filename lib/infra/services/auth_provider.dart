@@ -53,9 +53,7 @@ class AuthProvider extends ChangeNotifier {
   Future<void> register(String email, String password) async {
     try {
       await account.create(
-          userId: ID.unique(),
-          email: email,
-          password: password);
+          userId: ID.unique(), email: email, password: password);
       await emailLogin(email, password);
       notifyListeners();
     } on AppwriteException catch (e) {
