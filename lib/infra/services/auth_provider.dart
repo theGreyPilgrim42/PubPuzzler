@@ -45,7 +45,10 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> register(String email, String password) async {
-    await account.create(userId: ID.unique(), email: email, password: password); // TODO: Handle case - User already exists
+    await account.create(
+        userId: ID.unique(),
+        email: email,
+        password: password); // TODO: Handle case - User already exists
     await emailLogin(email, password);
     notifyListeners();
   }

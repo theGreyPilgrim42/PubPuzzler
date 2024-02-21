@@ -67,8 +67,10 @@ class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
                 logger.d('Starting quiz...');
                 if (!context.mounted) return;
 
-                String userId = Provider.of<AuthProvider>(context, listen: false).userId!;
-                Provider.of<GameProvider>(context, listen: false).addNewGame(userId);
+                String userId =
+                    Provider.of<AuthProvider>(context, listen: false).userId!;
+                Provider.of<GameProvider>(context, listen: false)
+                    .addNewGame(userId);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => QuestionScreen(

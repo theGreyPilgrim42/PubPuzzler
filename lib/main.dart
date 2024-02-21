@@ -40,8 +40,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>(create: (context) => AuthProvider()),
-        ChangeNotifierProvider<GameProvider>(create: (context) => GameProvider()),
+        ChangeNotifierProvider<AuthProvider>(
+            create: (context) => AuthProvider()),
+        ChangeNotifierProvider<GameProvider>(
+            create: (context) => GameProvider()),
       ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
@@ -64,32 +66,32 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          // Header container
-          appBar: AppBar(
-            title: Text(GlobalConfiguration().getValue('appName')),
-            bottom: const TabBar(tabs: [
-              Tab(icon: Icon(Icons.quiz)),
-              Tab(icon: Icon(Icons.add_circle_outline)),
-              Tab(icon: Icon(Icons.account_circle_outlined)),
-            ]),
-          ),
-          body: const TabBarView(
-            children: [
-              SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ChooseQuestionTypeForm(),
-                  ],
-                ),
+      length: 3,
+      child: Scaffold(
+        // Header container
+        appBar: AppBar(
+          title: Text(GlobalConfiguration().getValue('appName')),
+          bottom: const TabBar(tabs: [
+            Tab(icon: Icon(Icons.quiz)),
+            Tab(icon: Icon(Icons.add_circle_outline)),
+            Tab(icon: Icon(Icons.account_circle_outlined)),
+          ]),
+        ),
+        body: const TabBarView(
+          children: [
+            SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ChooseQuestionTypeForm(),
+                ],
               ),
-              AddQuestionForm(),
-              AccountPage()
-            ],
             ),
-          ),
+            AddQuestionForm(),
+            AccountPage()
+          ],
+        ),
+      ),
     );
   }
 }

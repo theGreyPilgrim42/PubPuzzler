@@ -35,7 +35,8 @@ class GameProvider extends ChangeNotifier {
     if (increaseScore) {
       current.updateScore();
     }
-    logger.d("Updated the current game - Question: $questionState | score: ${current.score}");
+    logger.d(
+        "Updated the current game - Question: $questionState | score: ${current.score}");
     notifyListeners();
   }
 
@@ -63,7 +64,8 @@ class GameProvider extends ChangeNotifier {
     int correctlyAnsweredQuestions = 0;
     for (final game in _games) {
       totalQuestions += game.questions.length;
-      correctlyAnsweredQuestions += game.questions.where((element) => element).length;
+      correctlyAnsweredQuestions +=
+          game.questions.where((element) => element).length;
     }
     _accuracy = (correctlyAnsweredQuestions / totalQuestions) * 100.0;
     notifyListeners();

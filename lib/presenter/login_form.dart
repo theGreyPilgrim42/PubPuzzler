@@ -19,71 +19,71 @@ class LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, auth, child) {
-        return Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(10),
-              children: <Widget>[
-                TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                ),
-                const SizedBox(height: 16.0),
-                TextField(
-                  controller: passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    await auth.emailLogin(emailController.text, passwordController.text);
-                    if (!context.mounted) return;
+    return Consumer<AuthProvider>(builder: (context, auth, child) {
+      return Card(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(10),
+            children: <Widget>[
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () async {
+                  await auth.emailLogin(
+                      emailController.text, passwordController.text);
+                  if (!context.mounted) return;
 
-                    if (auth.user != null) {
-                      Provider.of<GameProvider>(context, listen: false).getGames(auth.userId!);
-                      Navigator.pushAndRemoveUntil(
-                        context, 
-                        MaterialPageRoute(builder: (context) => const PubPuzzlerApp()),
-                        (route) =>  false
-                      );
-                    }
-                  },
-                  child: const Text('Login'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await auth.register(emailController.text, passwordController.text);
-                    if (!context.mounted) return;
+                  if (auth.user != null) {
+                    Provider.of<GameProvider>(context, listen: false)
+                        .getGames(auth.userId!);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PubPuzzlerApp()),
+                        (route) => false);
+                  }
+                },
+                child: const Text('Login'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await auth.register(
+                      emailController.text, passwordController.text);
+                  if (!context.mounted) return;
 
-                    if (auth.user != null) {
-                      Provider.of<GameProvider>(context, listen: false).getGames(auth.userId!);
-                      Navigator.pushAndRemoveUntil(
-                        context, 
-                        MaterialPageRoute(builder: (context) => const PubPuzzlerApp()),
-                        (route) => false
-                      );
-                    }
-                  },
-                  child: const Text('Register'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    auth.logout();
-                  },
-                  child: const Text('Logout'),
-                ),
-              ],
-            ),
-            ]
+                  if (auth.user != null) {
+                    Provider.of<GameProvider>(context, listen: false)
+                        .getGames(auth.userId!);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PubPuzzlerApp()),
+                        (route) => false);
+                  }
+                },
+                child: const Text('Register'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  auth.logout();
+                },
+                child: const Text('Logout'),
+              ),
+            ],
           ),
-        );
-      }
-    );
+        ]),
+      );
+    });
   }
 }

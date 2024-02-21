@@ -22,21 +22,23 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(
-      builder: (context, game, child) => Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Current Score: ${game.currentGame.score}',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        builder: (context, game, child) => Scaffold(
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Current Score: ${game.currentGame.score}',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  QuestionCard(
+                      gameProvider: game,
+                      category: widget.category,
+                      difficulty: widget.difficulty),
+                ],
               ),
-            ),
-            QuestionCard(gameProvider: game, category: widget.category, difficulty: widget.difficulty),
-          ],
-        ),
-      )
-    );
+            ));
   }
 }
