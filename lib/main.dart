@@ -49,7 +49,7 @@ class MainApp extends StatelessWidget {
         title: GlobalConfiguration().getValue('appName'),
         theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
         darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-        home: const LoginForm(),
+        home: const Scaffold(body: LoginForm()),
       ),
     );
   }
