@@ -19,18 +19,25 @@ class AnswerTile extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
 
     return Container(
-      width: width * 0.95,
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(2),
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: answered && answerText == correctAnswer ? Theme.of(context).primaryColor : answered && answerText != correctAnswer ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.secondary,
-          side: answered && answerText == correctAnswer ? BorderSide(color: Theme.of(context).primaryColor) : answered && answerText != correctAnswer ? BorderSide(color: Theme.of(context).colorScheme.error) : BorderSide(color: Theme.of(context).colorScheme.secondary)
-        ),
-        onPressed: answered ? null : () => checkAnswer(answerText),
-        child: Text(answerText),
-      )
-    );
+        width: width * 0.95,
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(2),
+        child: OutlinedButton(
+          style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: answered && answerText == correctAnswer
+                  ? Theme.of(context).primaryColor
+                  : answered && answerText != correctAnswer
+                      ? Theme.of(context).colorScheme.error
+                      : Theme.of(context).colorScheme.secondary,
+              side: answered && answerText == correctAnswer
+                  ? BorderSide(color: Theme.of(context).primaryColor)
+                  : answered && answerText != correctAnswer
+                      ? BorderSide(color: Theme.of(context).colorScheme.error)
+                      : BorderSide(
+                          color: Theme.of(context).colorScheme.secondary)),
+          onPressed: answered ? null : () => checkAnswer(answerText),
+          child: Text(answerText),
+        ));
   }
 }

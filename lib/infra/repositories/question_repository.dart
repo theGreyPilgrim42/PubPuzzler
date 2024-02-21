@@ -8,7 +8,8 @@ class QuestionRepository {
   // ignore: prefer_final_fields
   List<Question> _questions = [];
   // Singleton approach
-  static final QuestionRepository _questionRepository = QuestionRepository._privateConstructor();
+  static final QuestionRepository _questionRepository =
+      QuestionRepository._privateConstructor();
   QuestionRepository._privateConstructor();
 
   factory QuestionRepository() {
@@ -18,7 +19,8 @@ class QuestionRepository {
   Future<void> addQuestion(Question question) async {
     question.id = _nextId++;
     _questions.add(question);
-    logger.i("Added question '#${question.id} - ${question.question}' to Repository");
+    logger.i(
+        "Added question '#${question.id} - ${question.question}' to Repository");
   }
 
   Future<List<Question>> getQuestions() async {

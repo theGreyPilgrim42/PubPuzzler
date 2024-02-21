@@ -16,8 +16,14 @@ class ChooseQuestionTypeForm extends StatefulWidget {
 class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
   final _formKey = GlobalKey<FormState>();
   final logger = getLogger();
-  final List<String> categoryList = ['Random', ...Category.values.map((e) => e.name.toString())];
-  final List<String> difficultyList = ['Random', ...Difficulty.values.map((e) => e.name.toString())];
+  final List<String> categoryList = [
+    'Random',
+    ...Category.values.map((e) => e.name.toString())
+  ];
+  final List<String> difficultyList = [
+    'Random',
+    ...Difficulty.values.map((e) => e.name.toString())
+  ];
   late Category chosenCategory;
   late Difficulty chosenDifficulty;
 
@@ -42,8 +48,12 @@ class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
         shrinkWrap: true,
         padding: const EdgeInsets.all(10),
         children: [
-          CustomDropdownButton(list: categoryList, hint: 'Category', callback: setCategory),
-          CustomDropdownButton(list: difficultyList, hint: 'Difficulty', callback: setDifficulty),
+          CustomDropdownButton(
+              list: categoryList, hint: 'Category', callback: setCategory),
+          CustomDropdownButton(
+              list: difficultyList,
+              hint: 'Difficulty',
+              callback: setDifficulty),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
@@ -53,11 +63,14 @@ class ChooseQuestionTypeState extends State<ChooseQuestionTypeForm> {
                 logger.d('Starting quiz...');
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => QuestionScreen(category: chosenCategory, difficulty: chosenDifficulty,),
+                    builder: (context) => QuestionScreen(
+                      category: chosenCategory,
+                      difficulty: chosenDifficulty,
+                    ),
                   ),
                 );
               }
-            }, 
+            },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
