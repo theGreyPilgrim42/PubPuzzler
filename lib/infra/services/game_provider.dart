@@ -10,7 +10,7 @@ class GameProvider extends ChangeNotifier {
   bool _isUpdated = false;
   int _totalScore = 0;
   double _accuracy = 0.0;
-  int _maxRounds = 5;
+  final int _maxRounds = 5;
 
   Future<void> getGames(String userId) async {
     if (_isUpdated) return;
