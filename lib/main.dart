@@ -21,7 +21,8 @@ void main() async {
     if (kDebugMode) {
       return CustomErrorWidget(errorMessage: details.exception.toString());
     }
-    return const CustomErrorWidget(errorMessage: 'We are sorry for any inconvenience');
+    return const CustomErrorWidget(
+        errorMessage: 'We are sorry for any inconvenience');
   };
   await dotenv.load();
   await GlobalConfiguration().loadFromAsset("app_settings");
@@ -37,8 +38,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<GameProvider>(create: (context) => GameProvider()),
-        ChangeNotifierProvider<AuthProvider>(create: (context) => AuthProvider()),
+        ChangeNotifierProvider<GameProvider>(
+            create: (context) => GameProvider()),
+        ChangeNotifierProvider<AuthProvider>(
+            create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
@@ -51,9 +54,7 @@ class MainApp extends StatelessWidget {
 }
 
 class PubPuzzlerApp extends StatefulWidget {
-  const PubPuzzlerApp({
-    super.key
-  });
+  const PubPuzzlerApp({super.key});
 
   @override
   State<PubPuzzlerApp> createState() => _PubPuzzlerAppState();
@@ -63,40 +64,37 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          // Header container
-          appBar: AppBar(
-            title: Text(GlobalConfiguration().getValue('appName')),
-            bottom: const TabBar(tabs: [
-              Tab(icon: Icon(Icons.quiz)),
-              Tab(icon: Icon(Icons.add_circle_outline)),
-              Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
-              Tab(icon: Icon(Icons.account_circle_outlined)),
-            ]),
-          ),
-          body: const TabBarView(
-            children: [
-              SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ChooseQuestionTypeForm(),
-                  ],
-                ),
-              ),
-              AddQuestionForm(),
-              Column(
+      length: 4,
+      child: Scaffold(
+        // Header container
+        appBar: AppBar(
+          title: Text(GlobalConfiguration().getValue('appName')),
+          bottom: const TabBar(tabs: [
+            Tab(icon: Icon(Icons.quiz)),
+            Tab(icon: Icon(Icons.add_circle_outline)),
+            Tab(icon: Icon(Icons.insert_chart_outlined_rounded)),
+            Tab(icon: Icon(Icons.account_circle_outlined)),
+          ]),
+        ),
+        body: const TabBarView(
+          children: [
+            SafeArea(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.insert_chart_outlined_rounded),
-                  Text('Statistics'),
-                ]
+                  ChooseQuestionTypeForm(),
+                ],
               ),
-              LoginForm(),
-            ],
             ),
-          ),
+            AddQuestionForm(),
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(Icons.insert_chart_outlined_rounded),
+              Text('Statistics'),
+            ]),
+            LoginForm(),
+          ],
+        ),
+      ),
     );
   }
 }

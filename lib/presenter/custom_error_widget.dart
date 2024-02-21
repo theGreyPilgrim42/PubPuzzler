@@ -7,7 +7,7 @@ class CustomErrorWidget extends StatelessWidget {
   });
 
   final String errorMessage;
-  
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,12 +22,14 @@ class CustomErrorWidget extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             "An error occured!",
-            style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 20),
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.error, fontSize: 20),
           ),
           const SizedBox(height: 10),
           Text(
             errorMessage,
-            style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 14),
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.error, fontSize: 14),
           ),
         ],
       ),

@@ -24,9 +24,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
     return DropdownButtonFormField<String>(
       value: widget.list.first,
       hint: Text(widget.hint),
-      decoration: InputDecoration(
-        labelText: widget.hint
-      ),
+      decoration: InputDecoration(labelText: widget.hint),
       icon: const Icon(Icons.arrow_downward),
       elevation: 16,
       onChanged: (String? value) {
@@ -42,7 +40,9 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
         );
       }).toList(),
       validator: (value) {
-        return (value == null || value.isEmpty || !widget.list.contains(value)) ? 'Please choose a ${widget.hint}' : null;
+        return (value == null || value.isEmpty || !widget.list.contains(value))
+            ? 'Please choose a ${widget.hint}'
+            : null;
       },
       onSaved: (value) {
         widget.callback(value);

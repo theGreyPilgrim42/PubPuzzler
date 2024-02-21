@@ -16,7 +16,7 @@ Logger getLogger() {
 
 void setupLogger() {
   if (kDebugMode) {
-    Logger.level = Level.debug;  
+    Logger.level = Level.debug;
   } else {
     Logger.level = Level.info;
   }

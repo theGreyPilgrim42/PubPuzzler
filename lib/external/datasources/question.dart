@@ -23,7 +23,8 @@ Future<Question> fetchQuestion({int? category, String? difficulty}) async {
   logger.d('Trying to fetch Question from URL: $url');
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    Question question = Question.fromJson(jsonDecode(response.body)['results'][0]);
+    Question question =
+        Question.fromJson(jsonDecode(response.body)['results'][0]);
     await questionRepository.addQuestion(question);
     logger.i('Successfully fetched new Question: ${question.question}');
     return question;
@@ -33,7 +34,8 @@ Future<Question> fetchQuestion({int? category, String? difficulty}) async {
   }
 }
 
-Future<List<Question>> fetchQuestions(int amount, {int? category, String? difficulty}) async {
+Future<List<Question>> fetchQuestions(int amount,
+    {int? category, String? difficulty}) async {
   String url = '$apiURL?amount=$amount';
   if (category != null) {
     url = '$url&category=$category';
@@ -45,7 +47,9 @@ Future<List<Question>> fetchQuestions(int amount, {int? category, String? diffic
   logger.d('Trying to fetch Questions from URL: $url');
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    List<Question> questions = (jsonDecode(response.body)['results'] as List).map((item) => Question.fromJson(item)).toList();
+    List<Question> questions = (jsonDecode(response.body)['results'] as List)
+        .map((item) => Question.fromJson(item))
+        .toList();
     for (final question in questions) {
       await questionRepository.addQuestion(question);
     }

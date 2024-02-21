@@ -12,7 +12,8 @@ enum Category {
   entertainmentBooks(name: 'Entertainment: Books', id: 10),
   entertainmentFilm(name: 'Entertainment: Film', id: 11),
   entertainmentMusic(name: 'Entertainment: Music', id: 12),
-  entertainmentMusicalsTheatres(name: 'Entertainment: Musicals & Theatres', id: 13),
+  entertainmentMusicalsTheatres(
+      name: 'Entertainment: Musicals & Theatres', id: 13),
   entertainmentTelevision(name: 'Entertainment: Television', id: 14),
   entertainmentVideoGames(name: 'Entertainment: Video Games', id: 15),
   entertainmentBoardGames(name: 'Entertainment: Board Games', id: 16),
@@ -30,14 +31,16 @@ enum Category {
   vehicles(name: 'Vehicles', id: 28),
   entertainmentComics(name: 'Entertainment: Comics', id: 29),
   scienceGadgets(name: 'Science: Gadgets', id: 30),
-  entertainmentJapaneseAnimeManga(name: 'Entertainment: Japanese Anime & Manga', id: 31),
-  entertainmentCartoonAnimations(name: 'Entertainment: Cartoon & Animations', id: 32);
+  entertainmentJapaneseAnimeManga(
+      name: 'Entertainment: Japanese Anime & Manga', id: 31),
+  entertainmentCartoonAnimations(
+      name: 'Entertainment: Cartoon & Animations', id: 32);
 
   const Category({required this.name, required this.id});
   final String name;
   final int id;
 
-   // Static parser method using random Category as fallback
+  // Static parser method using random Category as fallback
   static Category fromString(String label) {
     return values.firstWhere(
       (v) => v.name == label,
@@ -55,7 +58,7 @@ enum Difficulty {
   final String name;
   final String id;
 
-     // Static parser method using medium as fallback
+  // Static parser method using medium as fallback
   static Difficulty fromString(String label) {
     return values.firstWhere(
       (v) => v.name == label,
@@ -81,38 +84,33 @@ class Question {
   List<String> answers;
   AnswerState answerState;
 
-  Question(
-    this.category,
-    this.type,
-    this.difficulty,
-    this.question,
-    this.correctAnswer,
-    this.incorrectAnswers
-  ):
-    id = 0,
-    answers = [correctAnswer, ...incorrectAnswers],
-    answerState = AnswerState.none {
-      answers.shuffle();
+  Question(this.category, this.type, this.difficulty, this.question,
+      this.correctAnswer, this.incorrectAnswers)
+      : id = 0,
+        answers = [correctAnswer, ...incorrectAnswers],
+        answerState = AnswerState.none {
+    answers.shuffle();
   }
 
   factory Question.fromJson(Map<String, dynamic> json) {
     logger.d('Creating Question from JSON...');
     return Question(
-      Category.fromString(unescape.convert(json['category'])),
-      unescape.convert(json['type']),
-      Difficulty.values.byName(unescape.convert(json['difficulty'])),
-      unescape.convert(json['question']),
-      unescape.convert(json['correct_answer']),
-      (json['incorrect_answers'] as List).map((item) => unescape.convert(item)).toList()
-    );
+        Category.fromString(unescape.convert(json['category'])),
+        unescape.convert(json['type']),
+        Difficulty.values.byName(unescape.convert(json['difficulty'])),
+        unescape.convert(json['question']),
+        unescape.convert(json['correct_answer']),
+        (json['incorrect_answers'] as List)
+            .map((item) => unescape.convert(item))
+            .toList());
   }
 
   @override
   String toString() {
     return "Question: $question\t"
-      "Category: ${category.name}\t"
-      "Difficulty: ${difficulty.name}\t"
-      "Correct Answer: $correctAnswer\t"
-      "Incorrect Answers: $incorrectAnswers\t";
+        "Category: ${category.name}\t"
+        "Difficulty: ${difficulty.name}\t"
+        "Correct Answer: $correctAnswer\t"
+        "Incorrect Answers: $incorrectAnswers\t";
   }
 }
