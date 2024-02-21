@@ -44,6 +44,12 @@ class LoginFormState extends State<LoginForm> {
                       emailController.text, passwordController.text);
                   if (!context.mounted) return;
 
+                  if (auth.hasError) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(auth.errorSnackBar);
+                    return;
+                  }
+
                   if (auth.user != null) {
                     Provider.of<GameProvider>(context, listen: false)
                         .getGames(auth.userId!);
@@ -62,6 +68,12 @@ class LoginFormState extends State<LoginForm> {
                       emailController.text, passwordController.text);
                   if (!context.mounted) return;
 
+                  if (auth.hasError) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(auth.errorSnackBar);
+                    return;
+                  }
+
                   if (auth.user != null) {
                     Provider.of<GameProvider>(context, listen: false)
                         .getGames(auth.userId!);
@@ -73,12 +85,6 @@ class LoginFormState extends State<LoginForm> {
                   }
                 },
                 child: const Text('Register'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  auth.logout();
-                },
-                child: const Text('Logout'),
               ),
             ],
           ),

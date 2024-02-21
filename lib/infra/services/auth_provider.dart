@@ -1,22 +1,22 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();
 
-// TODO: Improve error handling in general
+// TODO: Check how to persist a session
 class AuthProvider extends ChangeNotifier {
   late Client _client;
   late Account _account;
-  late User? _user;
-  late String? _userId;
+  User? _user;
+  String? _userId;
+  bool _hasError = false;
+  SnackBar _errorSnackBar = const SnackBar(content: Text(""));
 
   AuthProvider() {
-    _user = null;
-    _userId = null;
     // Setup account and client
     _client = Client();
     _client = Client()
@@ -31,31 +31,55 @@ class AuthProvider extends ChangeNotifier {
   Account get account => _account;
   User? get user => _user;
   String? get userId => _userId;
+  bool get hasError => _hasError;
+  SnackBar get errorSnackBar => _errorSnackBar;
 
   Future<void> emailLogin(String email, String password) async {
-    await _account.createEmailSession(email: email, password: password);
-    _user = await account.get();
-    _userId = _user!.$id;
-    notifyListeners();
-  }
-
-  Future<void> guestLogin() async {
-    await _account.createAnonymousSession();
-    notifyListeners();
+    try {
+      await _account.createEmailSession(email: email, password: password);
+      _user = await account.get();
+      _userId = _user!.$id;
+      _hasError = false;
+      _errorSnackBar = const SnackBar(content: Text(""));
+      notifyListeners();
+    } on AppwriteException catch (e) {
+      logger.e("E-Mail login failed - ${e.message} - ${e.type} - ${e.code}");
+      _hasError = true;
+      _errorSnackBar = SnackBar(content: Text(e.message!));
+      notifyListeners();
+    }
   }
 
   Future<void> register(String email, String password) async {
-    await account.create(
-        userId: ID.unique(),
-        email: email,
-        password: password); // TODO: Handle case - User already exists
-    await emailLogin(email, password);
-    notifyListeners();
+    try {
+      await account.create(
+          userId: ID.unique(),
+          email: email,
+          password: password);
+      await emailLogin(email, password);
+      notifyListeners();
+    } on AppwriteException catch (e) {
+      logger.e(
+          "Failed to register new user - ${e.message} - ${e.type} - ${e.code}");
+      _hasError = true;
+      _errorSnackBar = SnackBar(content: Text(e.message!));
+      notifyListeners();
+    }
   }
 
+  // TODO: After logging out, there are no descendant Scaffolds present
   Future<void> logout() async {
-    await account.deleteSession(sessionId: 'current');
-    _user = null;
-    notifyListeners();
+    try {
+      await account.deleteSession(sessionId: 'current');
+      _user = null;
+      _hasError = false;
+      _errorSnackBar = const SnackBar(content: Text(""));
+      notifyListeners();
+    } on AppwriteException catch (e) {
+      logger.e("Failed to logout user - ${e.message}");
+      _hasError = true;
+      _errorSnackBar = SnackBar(content: Text(e.message!));
+      notifyListeners();
+    }
   }
 }
