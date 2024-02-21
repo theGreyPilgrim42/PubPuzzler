@@ -192,6 +192,16 @@ class _QuestionCardState extends State<QuestionCard>
                   padding: const EdgeInsets.only(top: 16),
                   child: Text('Error: ${snapshot.error}'),
                 ),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        question = fetchQuestion(
+                            category: widget.category.id,
+                            difficulty: widget.difficulty.id);
+                        countdown();
+                      });
+                    },
+                    child: const Text("Try again"))
               ];
             } else {
               children = const <Widget>[
