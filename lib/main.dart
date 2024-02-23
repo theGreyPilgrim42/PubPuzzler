@@ -7,7 +7,6 @@ import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/presenter/account_page.dart';
-import 'package:pub_puzzler/presenter/add_question_widget.dart';
 import 'package:pub_puzzler/presenter/choose_type_widget.dart';
 import 'package:pub_puzzler/presenter/custom_error_widget.dart';
 import 'package:pub_puzzler/presenter/login_form.dart';
@@ -66,14 +65,13 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         // Header container
         appBar: AppBar(
           title: Text(GlobalConfiguration().getValue('appName')),
           bottom: const TabBar(tabs: [
             Tab(icon: Icon(Icons.quiz)),
-            Tab(icon: Icon(Icons.add_circle_outline)),
             Tab(icon: Icon(Icons.account_circle_outlined)),
           ]),
         ),
@@ -87,7 +85,6 @@ class _PubPuzzlerAppState extends State<PubPuzzlerApp> {
                 ],
               ),
             ),
-            AddQuestionForm(),
             AccountPage()
           ],
         ),
