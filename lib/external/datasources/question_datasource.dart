@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
-import 'package:pub_puzzler/domain/entities/question.dart';
-import 'package:pub_puzzler/external/datasources/functions.dart';
+import 'package:pub_puzzler/domain/entities/question_entity.dart';
+import 'package:pub_puzzler/external/datasources/functions_datasource.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final String apiURL = GlobalConfiguration().getValue('baseOpenDbApiUrl');

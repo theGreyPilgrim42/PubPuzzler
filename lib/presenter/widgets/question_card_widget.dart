@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/domain/entities/question_entity.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 import 'package:pub_puzzler/infra/services/question_provider.dart';
@@ -182,7 +182,7 @@ class _QuestionCardState extends State<QuestionCard>
                   child: const Text('Next question'),
                 ),
               ];
-            } else if (snapshot.hasError) {
+            } else if (snapshot.hasError) { // TODO: Check why this doesn't work properly anymore
               children = <Widget>[
                 Icon(
                   Icons.error_outline,

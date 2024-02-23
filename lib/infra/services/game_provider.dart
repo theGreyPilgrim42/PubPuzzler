@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:pub_puzzler/domain/entities/game.dart';
-import 'package:pub_puzzler/external/datasources/database.dart';
+import 'package:pub_puzzler/domain/entities/game_entity.dart';
+import 'package:pub_puzzler/external/datasources/database_datasource.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();

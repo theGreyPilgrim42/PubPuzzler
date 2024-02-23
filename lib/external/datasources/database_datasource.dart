@@ -2,9 +2,9 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:pub_puzzler/domain/entities/game.dart';
-import 'package:pub_puzzler/domain/entities/question.dart';
-import 'package:pub_puzzler/external/datasources/functions.dart';
+import 'package:pub_puzzler/domain/entities/game_entity.dart';
+import 'package:pub_puzzler/domain/entities/question_entity.dart';
+import 'package:pub_puzzler/external/datasources/functions_datasource.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final _logger = getLogger();
