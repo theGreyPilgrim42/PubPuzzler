@@ -182,7 +182,8 @@ class _QuestionCardState extends State<QuestionCard>
                   child: const Text('Next question'),
                 ),
               ];
-            } else if (snapshot.hasError) { // TODO: Check why this doesn't work properly anymore
+            } else if (snapshot.hasError) {
+              // TODO: Check why this doesn't work properly anymore
               children = <Widget>[
                 Icon(
                   Icons.error_outline,

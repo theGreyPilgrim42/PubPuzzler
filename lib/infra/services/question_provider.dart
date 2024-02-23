@@ -8,21 +8,21 @@ final _logger = getLogger();
 class QuestionProvider extends ChangeNotifier {
   int _nextId = 1;
   final List<Question> _questions = [];
-  
+
   Future<Question> getNewQuestion({int? category, String? difficulty}) async {
     try {
-      Question question = await fetchQuestion(category: category, difficulty: difficulty);
+      Question question =
+          await fetchQuestion(category: category, difficulty: difficulty);
       if (_isExisting(question)) {
         return getNewQuestion(category: category, difficulty: difficulty);
       }
       question.id = _nextId++;
       _questions.add(question);
       return question;
-    } catch(e) {
+    } catch (e) {
       _logger.e('An error occurred while getting a new question - $e');
       throw Future.error('An error occurred while getting a new question');
     }
-    
   }
 
   bool _isExisting(Question question) {

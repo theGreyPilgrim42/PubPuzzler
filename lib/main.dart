@@ -44,7 +44,8 @@ class MainApp extends StatelessWidget {
             create: (context) => AuthProvider()),
         ChangeNotifierProvider<GameProvider>(
             create: (context) => GameProvider()),
-        ChangeNotifierProvider<QuestionProvider>(create: (context) => QuestionProvider()),
+        ChangeNotifierProvider<QuestionProvider>(
+            create: (context) => QuestionProvider()),
       ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
