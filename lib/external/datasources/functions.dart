@@ -24,6 +24,8 @@ Future<Map<String, dynamic>> _getPostExecutionResult(String functionId,
         headers: headers);
     return execution.toMap();
   } on AppwriteException catch (e) {
+    _logger
+        .e("An error occurred while getting execution results - ${e.message}");
     throw Future.error("An error occurred while getting execution results");
   }
 }
@@ -36,9 +38,10 @@ Future<void> executeLogErrorFunction(String errorMsg) async {
         {});
     final statusCode = result['responseStatusCode'];
 
-    if (statusCode != 201)
+    if (statusCode != 201) {
       _logger.e(
           'An error occurred while requesting to execute logging function - StatusCode: $statusCode');
+    }
   } catch (e) {
     logger.e(e);
   }
