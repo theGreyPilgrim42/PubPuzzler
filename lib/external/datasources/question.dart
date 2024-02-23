@@ -4,12 +4,10 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/external/datasources/functions.dart';
-import 'package:pub_puzzler/infra/repositories/question_repository.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final String apiURL = GlobalConfiguration().getValue('baseOpenDbApiUrl');
 const String questionType = '&type=multiple';
-final QuestionRepository questionRepository = QuestionRepository();
 final logger = getLogger();
 
 Future<Question> fetchQuestion({int? category, String? difficulty}) async {
@@ -52,9 +50,6 @@ Future<List<Question>> fetchQuestions(int amount,
     List<Question> questions = (jsonDecode(response.body)['results'] as List)
         .map((item) => Question.fromJson(item))
         .toList();
-    for (final question in questions) {
-      await questionRepository.addQuestion(question);
-    }
     logger.i('Successfully fetched ${questions.length} new Questions');
     return questions;
   } else {
