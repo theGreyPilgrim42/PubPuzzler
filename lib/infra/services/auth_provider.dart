@@ -3,6 +3,7 @@ import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:pub_puzzler/external/datasources/functions.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();
@@ -43,7 +44,9 @@ class AuthProvider extends ChangeNotifier {
       _errorSnackBar = const SnackBar(content: Text(""));
       notifyListeners();
     } on AppwriteException catch (e) {
-      logger.e("E-Mail login failed - ${e.message} - ${e.type} - ${e.code}");
+      final errorMsg = "E-Mail login failed - ${e.message}";
+      logger.e(errorMsg);
+      executeLogErrorFunction(errorMsg);
       _hasError = true;
       _errorSnackBar = SnackBar(content: Text(e.message!));
       notifyListeners();
@@ -57,8 +60,9 @@ class AuthProvider extends ChangeNotifier {
       await emailLogin(email, password);
       notifyListeners();
     } on AppwriteException catch (e) {
-      logger.e(
-          "Failed to register new user - ${e.message} - ${e.type} - ${e.code}");
+      final errorMsg = "Failed to register new user - ${e.message}";
+      logger.e(errorMsg);
+      executeLogErrorFunction(errorMsg);
       _hasError = true;
       _errorSnackBar = SnackBar(content: Text(e.message!));
       notifyListeners();
@@ -74,7 +78,9 @@ class AuthProvider extends ChangeNotifier {
       _errorSnackBar = const SnackBar(content: Text(""));
       notifyListeners();
     } on AppwriteException catch (e) {
-      logger.e("Failed to logout user - ${e.message}");
+      final errorMsg = "Failed to logout user - ${e.message}";
+      logger.e(errorMsg);
+      executeLogErrorFunction(errorMsg);
       _hasError = true;
       _errorSnackBar = SnackBar(content: Text(e.message!));
       notifyListeners();
