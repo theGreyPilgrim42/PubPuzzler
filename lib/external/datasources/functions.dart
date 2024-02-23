@@ -12,7 +12,8 @@ final _client = Client()
     .setProject(dotenv.env['APPWRITE_PROJECT_ID']);
 final _functions = Functions(_client);
 
-Future<Map<String, dynamic>> _getPostExecutionResult(String functionId, Map<String, String> body, Map<dynamic, dynamic> headers) async {
+Future<Map<String, dynamic>> _getPostExecutionResult(String functionId,
+    Map<String, String> body, Map<dynamic, dynamic> headers) async {
   try {
     final execution = await _functions.createExecution(
         functionId: functionId,
@@ -22,18 +23,23 @@ Future<Map<String, dynamic>> _getPostExecutionResult(String functionId, Map<Stri
         method: 'POST',
         headers: headers);
     return execution.toMap();
-  } on AppwriteException catch(e) {
+  } on AppwriteException catch (e) {
     throw Future.error("An error occurred while getting execution results");
   }
 }
 
 Future<void> executeLogErrorFunction(String errorMsg) async {
   try {
-    final result = await _getPostExecutionResult(dotenv.env['APPWRITE_FUNCTION_ERROR_LOGGING_ID']!, {'errorMsg': errorMsg}, {});
+    final result = await _getPostExecutionResult(
+        dotenv.env['APPWRITE_FUNCTION_ERROR_LOGGING_ID']!,
+        {'errorMsg': errorMsg},
+        {});
     final statusCode = result['responseStatusCode'];
 
-    if (statusCode != 201) _logger.e('An error occurred while requesting to execute logging function - StatusCode: $statusCode');
-  } catch(e) {
+    if (statusCode != 201)
+      _logger.e(
+          'An error occurred while requesting to execute logging function - StatusCode: $statusCode');
+  } catch (e) {
     logger.e(e);
   }
-  }
+}
