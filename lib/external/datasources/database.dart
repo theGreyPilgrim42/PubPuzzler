@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:pub_puzzler/domain/entities/game.dart';
 import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/external/datasources/functions.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final _logger = getLogger();
@@ -38,7 +39,9 @@ Future<void> _createDoc(Map<dynamic, dynamic> data) async {
         data: data);
     _logger.i("Created document: $document");
   } on AppwriteException catch (e) {
-    _logger.e("Could not create document - Error occurred: ${e.message}");
+    final errorMsg = "Could not create document - Error occurred: ${e.message}";
+    _logger.e(errorMsg);
+    executeLogErrorFunction(errorMsg);
   }
 }
 
@@ -53,7 +56,9 @@ Future<DocumentList> _getDoc(List<String> queries) async {
     _logger.i("Document list: $documents");
     return documents;
   } on AppwriteException catch (e) {
-    _logger.e("Could not list documents - Error occurred: ${e.message}");
+    final errorMsg = "Could not list documents - Error occurred: ${e.message}";
+    _logger.e(errorMsg);
+    executeLogErrorFunction(errorMsg);
     return Future.error('Failed to fetch documents');
   }
 }

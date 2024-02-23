@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/external/datasources/functions.dart';
 import 'package:pub_puzzler/infra/repositories/question_repository.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
@@ -29,7 +30,9 @@ Future<Question> fetchQuestion({int? category, String? difficulty}) async {
     logger.i('Successfully fetched new Question: ${question.question}');
     return question;
   } else {
-    logger.e('Failed to fetch question');
+    const errorMsg = 'Failed to fetch question';
+    logger.e(errorMsg);
+    executeLogErrorFunction(errorMsg);
     return Future.error('Failed to fetch question');
   }
 }
@@ -56,7 +59,9 @@ Future<List<Question>> fetchQuestions(int amount,
     logger.i('Successfully fetched ${questions.length} new Questions');
     return questions;
   } else {
-    logger.e('Failed to fetch $amount questions');
+    final errorMsg = 'Failed to fetch $amount questions';
+    logger.e(errorMsg);
+    executeLogErrorFunction(errorMsg);
     return Future.error('Failed to fetch $amount questions');
   }
 }
