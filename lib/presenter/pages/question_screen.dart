@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
-import 'package:pub_puzzler/presenter/question_card.dart';
+import 'package:pub_puzzler/presenter/widgets/question_card.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({

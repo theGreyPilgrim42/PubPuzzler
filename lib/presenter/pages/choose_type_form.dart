@@ -4,8 +4,8 @@ import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
-import 'package:pub_puzzler/presenter/custom_dropdown_button.dart';
-import 'package:pub_puzzler/presenter/question_screen.dart';
+import 'package:pub_puzzler/presenter/pages/question_screen.dart';
+import 'package:pub_puzzler/presenter/widgets/custom_dropdown_button.dart';
 
 class ChooseQuestionTypeForm extends StatefulWidget {
   const ChooseQuestionTypeForm({super.key});

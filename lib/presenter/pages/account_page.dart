@@ -24,7 +24,7 @@ class AccountPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     Provider.of<AuthProvider>(context, listen: false)
-                        .user! // TODO: Check this an error can occur if logging out
+                        .user!
                         .email,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,

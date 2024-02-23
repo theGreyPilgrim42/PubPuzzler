@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
-import 'package:pub_puzzler/presenter/account_page.dart';
-import 'package:pub_puzzler/presenter/choose_type_widget.dart';
-import 'package:pub_puzzler/presenter/custom_error_widget.dart';
-import 'package:pub_puzzler/presenter/login_form.dart';
+import 'package:pub_puzzler/presenter/pages/account_page.dart';
+import 'package:pub_puzzler/presenter/pages/choose_type_form.dart';
+import 'package:pub_puzzler/presenter/pages/login_form.dart';
+import 'package:pub_puzzler/presenter/widgets/custom_error_widget.dart';
 import 'presenter/color_schemes.dart';
 
 void main() async {

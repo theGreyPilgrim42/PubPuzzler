@@ -3,7 +3,7 @@ import 'package:pub_puzzler/domain/entities/question.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/external/datasources/question.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
-import 'package:pub_puzzler/presenter/answer_tile.dart';
+import 'package:pub_puzzler/presenter/widgets/answer_tile.dart';
 
 class QuestionCard extends StatefulWidget {
   const QuestionCard({
