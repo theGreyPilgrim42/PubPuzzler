@@ -49,7 +49,6 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Check if the following two methods should be used as cloud functions on appwrite to include something more in the app
   void _calculateScore() {
     int total = 0;
     for (final game in _games) {

@@ -26,7 +26,6 @@ Future<Question> fetchQuestion({int? category, String? difficulty}) async {
   if (response.statusCode == 200) {
     Question question =
         Question.fromJson(jsonDecode(response.body)['results'][0]);
-    await questionRepository.addQuestion(question);
     logger.i('Successfully fetched new Question: ${question.question}');
     return question;
   } else {

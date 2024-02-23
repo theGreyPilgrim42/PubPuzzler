@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:pub_puzzler/infra/services/auth_provider.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
+import 'package:pub_puzzler/infra/services/question_provider.dart';
 import 'package:pub_puzzler/presenter/pages/account_page.dart';
 import 'package:pub_puzzler/presenter/pages/choose_type_form.dart';
 import 'package:pub_puzzler/presenter/pages/login_form.dart';
@@ -43,6 +44,7 @@ class MainApp extends StatelessWidget {
             create: (context) => AuthProvider()),
         ChangeNotifierProvider<GameProvider>(
             create: (context) => GameProvider()),
+        ChangeNotifierProvider<QuestionProvider>(create: (context) => QuestionProvider()),
       ],
       child: MaterialApp(
         title: GlobalConfiguration().getValue('appName'),
