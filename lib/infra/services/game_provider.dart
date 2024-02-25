@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:pub_puzzler/domain/entities/game.dart';
-import 'package:pub_puzzler/external/datasources/database.dart';
+import 'package:pub_puzzler/domain/entities/game_entity.dart';
+import 'package:pub_puzzler/external/datasources/database_datasource.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();
@@ -49,7 +49,6 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Check if the following two methods should be used as cloud functions on appwrite to include something more in the app
   void _calculateScore() {
     int total = 0;
     for (final game in _games) {

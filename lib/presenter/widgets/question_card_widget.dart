@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/domain/entities/question_entity.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
-import 'package:pub_puzzler/external/datasources/question.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
-import 'package:pub_puzzler/presenter/answer_tile.dart';
+import 'package:pub_puzzler/infra/services/question_provider.dart';
+import 'package:pub_puzzler/presenter/widgets/answer_tile.dart';
 
 class QuestionCard extends StatefulWidget {
   const QuestionCard({
     super.key,
     required this.gameProvider,
+    required this.questionProvider,
     required this.category,
     required this.difficulty,
   });
 
   final GameProvider gameProvider;
+  final QuestionProvider questionProvider;
   final Category category;
   final Difficulty difficulty;
 
@@ -24,7 +26,7 @@ class QuestionCard extends StatefulWidget {
 class _QuestionCardState extends State<QuestionCard>
     with TickerProviderStateMixin {
   final logger = getLogger();
-  late Future<Question> question = fetchQuestion(
+  late Future<Question> question = widget.questionProvider.getNewQuestion(
       category: widget.category.id, difficulty: widget.difficulty.id);
   late AnimationController animationController;
 
@@ -169,7 +171,7 @@ class _QuestionCardState extends State<QuestionCard>
                       ? null
                       : () {
                           setState(() {
-                            question = fetchQuestion(
+                            question = widget.questionProvider.getNewQuestion(
                                 category: widget.category.id,
                                 difficulty: widget.difficulty.id);
                             answered = false;
@@ -181,6 +183,7 @@ class _QuestionCardState extends State<QuestionCard>
                 ),
               ];
             } else if (snapshot.hasError) {
+              // TODO: Check why this doesn't work properly anymore
               children = <Widget>[
                 Icon(
                   Icons.error_outline,
@@ -194,7 +197,7 @@ class _QuestionCardState extends State<QuestionCard>
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        question = fetchQuestion(
+                        question = widget.questionProvider.getNewQuestion(
                             category: widget.category.id,
                             difficulty: widget.difficulty.id);
                         countdown();

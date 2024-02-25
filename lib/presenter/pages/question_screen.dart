@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pub_puzzler/domain/entities/question.dart';
+import 'package:pub_puzzler/domain/entities/question_entity.dart';
 import 'package:pub_puzzler/infra/services/game_provider.dart';
-import 'package:pub_puzzler/presenter/question_card.dart';
+import 'package:pub_puzzler/infra/services/question_provider.dart';
+import 'package:pub_puzzler/presenter/widgets/question_card_widget.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({
@@ -21,8 +22,8 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<GameProvider>(
-        builder: (context, game, child) => Scaffold(
+    return Consumer2<GameProvider, QuestionProvider>(
+        builder: (context, game, question, child) => Scaffold(
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -35,6 +36,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   ),
                   QuestionCard(
                       gameProvider: game,
+                      questionProvider: question,
                       category: widget.category,
                       difficulty: widget.difficulty),
                 ],

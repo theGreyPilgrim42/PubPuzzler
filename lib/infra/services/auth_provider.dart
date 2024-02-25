@@ -3,7 +3,7 @@ import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:pub_puzzler/external/datasources/functions.dart';
+import 'package:pub_puzzler/external/datasources/functions_datasource.dart';
 import 'package:pub_puzzler/infra/services/logger_util.dart';
 
 final logger = getLogger();
