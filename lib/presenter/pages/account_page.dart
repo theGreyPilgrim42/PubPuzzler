@@ -23,9 +23,7 @@ class AccountPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    Provider.of<AuthProvider>(context, listen: false)
-                        .user!
-                        .email,
+                    auth.user!.email,  // TODO: Check this
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -49,7 +47,7 @@ class AccountPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "${Provider.of<GameProvider>(context, listen: false).totalScore}",
+                      "${game.totalScore}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -69,7 +67,7 @@ class AccountPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "${Provider.of<GameProvider>(context, listen: false).accuracy.toStringAsFixed(1)} %",
+                      "${game.accuracy.toStringAsFixed(1)} %",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -87,7 +85,7 @@ class AccountPage extends StatelessWidget {
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              Provider.of<AuthProvider>(context, listen: false).logout();
+              auth.logout();
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginForm()),
