@@ -23,7 +23,7 @@ class AccountPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    auth.user!.email,  // TODO: Check this
+                    auth.user!.email, // TODO: Check this
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
